@@ -17,4 +17,6 @@
 
 ###> self ###
 .idea
+docker/data
+logs
 ###< self ###
