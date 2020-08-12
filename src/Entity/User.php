@@ -63,9 +63,15 @@ class User implements UserInterface
      */
     private $subscriptions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=File::class, mappedBy="user")
+     */
+    private $files;
+
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,6 +225,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($subscription->getUser() === $this) {
                 $subscription->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|File[]
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(File $file): self
+    {
+        if (!$this->files->contains($file)) {
+            $this->files[] = $file;
+            $file->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFile(File $file): self
+    {
+        if ($this->files->contains($file)) {
+            $this->files->removeElement($file);
+            // set the owning side to null (unless already changed)
+            if ($file->getUser() === $this) {
+                $file->setUser(null);
             }
         }
 
