@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FileRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -51,6 +53,16 @@ class File
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="files")
      */
     private $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Restoraunt::class, mappedBy="files")
+     */
+    private $restoraunts;
+
+    public function __construct()
+    {
+        $this->restoraunts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -125,6 +137,34 @@ class File
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Restoraunt[]
+     */
+    public function getRestoraunts(): Collection
+    {
+        return $this->restoraunts;
+    }
+
+    public function addRestoraunt(Restoraunt $restoraunt): self
+    {
+        if (!$this->restoraunts->contains($restoraunt)) {
+            $this->restoraunts[] = $restoraunt;
+            $restoraunt->addFile($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRestoraunt(Restoraunt $restoraunt): self
+    {
+        if ($this->restoraunts->contains($restoraunt)) {
+            $this->restoraunts->removeElement($restoraunt);
+            $restoraunt->removeFile($this);
+        }
 
         return $this;
     }

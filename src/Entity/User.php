@@ -68,10 +68,16 @@ class User implements UserInterface
      */
     private $files;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Restoraunt::class, mappedBy="user")
+     */
+    private $restoraunts;
+
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->restoraunts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -256,6 +262,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($file->getUser() === $this) {
                 $file->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Restoraunt[]
+     */
+    public function getRestoraunts(): Collection
+    {
+        return $this->restoraunts;
+    }
+
+    public function addRestoraunt(Restoraunt $restoraunt): self
+    {
+        if (!$this->restoraunts->contains($restoraunt)) {
+            $this->restoraunts[] = $restoraunt;
+            $restoraunt->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRestoraunt(Restoraunt $restoraunt): self
+    {
+        if ($this->restoraunts->contains($restoraunt)) {
+            $this->restoraunts->removeElement($restoraunt);
+            // set the owning side to null (unless already changed)
+            if ($restoraunt->getUser() === $this) {
+                $restoraunt->setUser(null);
             }
         }
 
