@@ -19,9 +19,9 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+         if ($this->getUser()) {
+             return $this->redirectToRoute('target_path');
+         }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -38,48 +38,4 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-
-    /**
-     * @Route("/register", name="app_register")
-     */
-    public function register()
-//    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $formAuthenticator)
-    {
-//        $form =$this->createForm(UserRegistrationFormType::class);
-//
-//
-//        $form->handleRequest($request);
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            /** @var User $user $user */
-//            $user = $form->getData();
-//
-//            $user->setPassword($passwordEncoder->encodePassword(
-//                $user,
-//                $form['plainPassword']->getData()
-//            ));
-//
-//            if (true === $form['agreeTerms']->getData()) {
-////                $user->setAgreedTermsAt(new \DateTime());
-//                $user->agreeTerms();
-//            }
-//
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($user);
-//            $em->flush();
-//
-////            return $this->redirectToRoute('app_account');
-//            return $guardHandler->authenticateUserAndHandleSuccess(
-//                $user,
-//                $request,
-//                $formAuthenticator,
-//                'main'
-//            );
-//        }
-//
-//        return $this->render('security/register.html.twig', [
-//            'registrationForm' => $form->createView()
-//        ]);
-    }
-
-
 }
