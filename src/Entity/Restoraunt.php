@@ -30,7 +30,7 @@ class Restoraunt
 
     /**
      *
-     * @Gedmo\Slug(fields={"title", "code"})
+     * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(type="string", length=512, options={"comment":"Слаг для ресторана"})
      */
     private $slug;
