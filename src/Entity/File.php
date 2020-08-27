@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=FileRepository::class)
@@ -18,26 +19,31 @@ class File
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"file:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=512, options={"comment":"Url до файла"})
+     * @Groups({"file:read"})
      */
     private $link;
 
     /**
      * @ORM\Column(type="string", length=512, options={"comment":"Имя файла в хранилище после загрузки"})
+     * @Groups({"file:read"})
      */
     private $phisicalFileName;
 
     /**
      * @ORM\Column(type="string", length=512, options={"comment":"Имя загруженного файла"})
+     * @Groups({"file:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="boolean", options={"comment":"Доступность для просмотра/скачки"})
+     * @Groups({"file:read"})
      */
     private $isActive;
 
@@ -46,6 +52,7 @@ class File
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", options={"comment":"Дата загрузки файла"})
+     * @Groups({"file:read"})
      */
     private $createdAt;
 
