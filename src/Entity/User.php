@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -25,6 +26,10 @@ class User implements UserInterface
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="uuid")
+     */
+    private $uuid;
     /**
      * @ORM\Column(type="string", length=255, options={"comment":"ФИО"})
      */
@@ -322,5 +327,17 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid($uuid): self
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
 }
