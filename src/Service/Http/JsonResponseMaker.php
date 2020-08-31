@@ -18,7 +18,7 @@ class JsonResponseMaker implements ResponseMakerInterface
         $this->serializer = $serializer;
     }
 
-    public function makeItemResponse($item, $context = []): JsonResponse
+    public function makeItemResponse($item, $context = [], $httpStatus = 200): JsonResponse
     {
         return new JsonResponse(
             [
@@ -28,11 +28,12 @@ class JsonResponseMaker implements ResponseMakerInterface
                 'meta'  => [
 
                 ]
-            ]
+            ],
+            $httpStatus
         );
     }
 
-    public function makeItemsResponse($items,  $context = []): JsonResponse
+    public function makeItemsResponse($items,  $context = [], $httpStatus = 200): JsonResponse
     {
         return new JsonResponse(
             [
@@ -41,8 +42,9 @@ class JsonResponseMaker implements ResponseMakerInterface
                 ],
                 'meta'  => [
 
-                ]
-            ]
+                ],
+            ],
+            $httpStatus
         );
     }
 }
