@@ -10,6 +10,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -23,25 +24,30 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="uuid")
+     * @Groups({"user:read"})
      */
     private $uuid;
     /**
      * @ORM\Column(type="string", length=255, options={"comment":"ФИО"})
+     * @Groups({"user:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, options={"comment":"Уникальный email"})
+     * @Groups({"user:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=14)
+     * @Groups({"user:read"})
      */
     private $phone;
 
@@ -58,31 +64,37 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, options={"comment":"Должность"})
+     * @Groups({"user:read"})
      */
     private $position;
 
     /**
      * @ORM\Column(type="boolean", options={"comment":"Активный подтвержденный пользователь"})
+     * @Groups({"user:read"})
      */
     private $isActive = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Subscription::class, mappedBy="user")
+     * @Groups({"user:read"})
      */
     private $subscriptions;
 
     /**
      * @ORM\OneToMany(targetEntity=File::class, mappedBy="user")
+     * @Groups({"user:read"})
      */
     private $files;
 
     /**
      * @ORM\OneToMany(targetEntity=Restoraunt::class, mappedBy="user")
+     * @Groups({"user:read"})
      */
     private $restoraunts;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"user:read"})
      */
     private $isVerified = false;
 

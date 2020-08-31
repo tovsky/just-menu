@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=RestorauntRepository::class)
@@ -20,6 +21,8 @@ class Restoraunt
      * @var UuidInterface
      * @ORM\Id
      * @ORM\Column(type="uuid")
+     *
+     * @Groups({"user:read"})
      */
     private $id;
 

@@ -19,7 +19,8 @@ class File
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"file:read"})
+     *
+     * @Groups({"file:read", "user:read"})
      */
     private $id;
 
