@@ -4,6 +4,7 @@
 namespace App\Service\Http;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class JsonResponseMaker implements ResponseMakerInterface
@@ -18,7 +19,7 @@ class JsonResponseMaker implements ResponseMakerInterface
         $this->serializer = $serializer;
     }
 
-    public function makeItemResponse($item, $context = [], $httpStatus = 200): JsonResponse
+    public function makeItemResponse($item, $context = [], $httpStatus = Response::HTTP_OK): JsonResponse
     {
         return new JsonResponse(
             [
@@ -33,7 +34,7 @@ class JsonResponseMaker implements ResponseMakerInterface
         );
     }
 
-    public function makeItemsResponse($items,  $context = [], $httpStatus = 200): JsonResponse
+    public function makeItemsResponse($items,  $context = [], $httpStatus = Response::HTTP_OK): JsonResponse
     {
         return new JsonResponse(
             [

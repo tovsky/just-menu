@@ -35,19 +35,19 @@ class User implements UserInterface
     private $uuid;
     /**
      * @ORM\Column(type="string", length=255, options={"comment":"ФИО"})
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "user:create"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, options={"comment":"Уникальный email"})
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "user:create"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=14)
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "user:create"})
      */
     private $phone;
 
@@ -64,7 +64,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, options={"comment":"Должность"})
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "user:create"})
      */
     private $position;
 
@@ -76,7 +76,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Subscription::class, mappedBy="user")
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "user:create"})
      */
     private $subscriptions;
 
@@ -159,6 +159,9 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
+    /**
+     * @Groups({"user:create"})
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
