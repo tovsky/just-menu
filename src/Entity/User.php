@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -22,21 +24,30 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
+     * @ORM\Column(type="uuid")
+     * @Groups({"user:read"})
+     */
+    private $uuid;
+    /**
      * @ORM\Column(type="string", length=255, options={"comment":"ФИО"})
+     * @Groups({"user:read", "user:create"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, options={"comment":"Уникальный email"})
+     * @Groups({"user:read", "user:create"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=14)
+     * @Groups({"user:read", "user:create"})
      */
     private $phone;
 
@@ -53,31 +64,37 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, options={"comment":"Должность"})
+     * @Groups({"user:read", "user:create"})
      */
     private $position;
 
     /**
      * @ORM\Column(type="boolean", options={"comment":"Активный подтвержденный пользователь"})
+     * @Groups({"user:read"})
      */
     private $isActive = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Subscription::class, mappedBy="user")
+     * @Groups({"user:read", "user:create"})
      */
     private $subscriptions;
 
     /**
      * @ORM\OneToMany(targetEntity=File::class, mappedBy="user")
+     * @Groups({"user:read"})
      */
     private $files;
 
     /**
      * @ORM\OneToMany(targetEntity=Restoraunt::class, mappedBy="user")
+     * @Groups({"user:read"})
      */
     private $restoraunts;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"user:read"})
      */
     private $isVerified = false;
 
@@ -142,6 +159,9 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
+    /**
+     * @Groups({"user:create"})
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -322,5 +342,17 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(Uuid $uuid): self
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
 }
