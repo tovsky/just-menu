@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tests\Functional\API\V1\User;
-
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,5 +29,4 @@ class CreateUserTest extends WebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
     }
-
 }

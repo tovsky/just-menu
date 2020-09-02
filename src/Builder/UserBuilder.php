@@ -1,20 +1,16 @@
 <?php
 
-
 namespace App\Builder;
-
 
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\Uuid;
 
 class UserBuilder
 {
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
+     private SerializerInterface $serializer;
 
     public function __construct(SerializerInterface $serializer)
     {
@@ -27,7 +23,7 @@ class UserBuilder
         $user = $this->serializer->deserialize(
             $request->getContent(),
             User::class,
-            'json',
+            JsonEncoder::FORMAT,
             ['groups' => 'user:create']
         );
 

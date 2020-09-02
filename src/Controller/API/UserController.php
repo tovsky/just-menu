@@ -4,7 +4,6 @@ namespace App\Controller\API;
 
 use App\Builder\UserBuilder;
 use App\Entity\User;
-use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Service\Http\JsonResponseMaker;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,26 +12,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/api/v1/users")
  */
 class UserController extends AbstractController
 {
-    /**
-     * @var JsonResponseMaker
-     */
-    private $jsonResponseMaker;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private JsonResponseMaker $jsonResponseMaker;
+
+    private UserRepository $userRepository;
+
+    private EntityManagerInterface $em;
 
     public function __construct(
         JsonResponseMaker $jsonResponseMaker,
@@ -60,6 +50,7 @@ class UserController extends AbstractController
      */
     public function saveItem(Request $request,UserBuilder $userBuilder): JsonResponse
     {
+        // TODO использовать резолвер
         $user = $userBuilder->build($request);
 
         $this->em->persist($user);
