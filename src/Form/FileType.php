@@ -18,7 +18,7 @@ class FileType extends AbstractType
             ->add('isActive')
             ->add('createdAt')
             ->add('user')
-            ->add('restoraunts')
+            ->add('restaurants')
         ;
     }
 
