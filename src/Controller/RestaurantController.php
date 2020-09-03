@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Builder\RestaurantBuilder;
+use App\Entity\Restaurant;
 use App\Http\Request\CreateRestaurantRequest;
 use App\Service\Http\ResponseMakerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,7 +23,7 @@ class RestaurantController
     }
 
     /**
-     * @Route(name="create_restauranta" ,methods={"POST"})
+     * @Route("/", name="create_restauranta" ,methods={"POST"})
      */
     public function create(CreateRestaurantRequest $request, RestaurantBuilder $builder, EntityManagerInterface $em): Response
     {
@@ -31,5 +32,13 @@ class RestaurantController
         $em->flush();
 
         return $this->responseMaker->makeItemResponse($restaurant, [], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/{slug}", name="get_restaurant", methods={"GET"})
+     */
+    public function getItem(Restaurant $restaurant): Response
+    {
+        return $this->responseMaker->makeItemResponse($restaurant, [], Response::HTTP_OK);
     }
 }
