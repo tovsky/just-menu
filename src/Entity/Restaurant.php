@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RestaurantRepository", repositoryClass=RestaurantRepository::class)
@@ -28,10 +27,9 @@ class Restaurant
     private string $name;
 
     /**
-     * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(type="string", nullable=false, options={"comment":"Слаг для ресторана"})
      */
-    private string $slug;
+    private ?string $slug = null;
 
     /**
      * @ORM\Column(type="text", nullable=true, options={"comment":"Описание ресторана"})

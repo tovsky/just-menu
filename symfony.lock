@@ -17,6 +17,12 @@
     "brick/math": {
         "version": "0.8.15"
     },
+    "chillerlan/php-qrcode": {
+        "version": "4.1.0"
+    },
+    "chillerlan/php-settings-container": {
+        "version": "2.0.0"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.10.99"
     },
