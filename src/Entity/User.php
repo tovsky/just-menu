@@ -72,7 +72,7 @@ class User implements UserInterface
      * @ORM\Column(type="boolean", options={"comment":"Активный подтвержденный пользователь"})
      * @Groups({"user:read"})
      */
-    private $isActive = false;
+    private bool $isActive = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Subscription::class, mappedBy="user")
