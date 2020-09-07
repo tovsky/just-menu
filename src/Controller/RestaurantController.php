@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/v0/restaurant")
+ * @Route("/api/v1/restaurant")
  */
 class RestaurantController
 {
@@ -23,7 +23,7 @@ class RestaurantController
     }
 
     /**
-     * @Route("/", name="create_restauranta" ,methods={"POST"})
+     * @Route("/", name="api_restaurant_create" ,methods={"POST"})
      */
     public function create(CreateRestaurantRequest $request, RestaurantBuilder $builder, EntityManagerInterface $em): Response
     {
@@ -35,7 +35,7 @@ class RestaurantController
     }
 
     /**
-     * @Route("/{slug}", name="get_restaurant", methods={"GET"})
+     * @Route("/{slug}", name="api_restaurant_get", methods={"GET"})
      */
     public function getItem(Restaurant $restaurant): Response
     {
