@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
-final class NotFoundHttpExceptionEventException implements EventSubscriberInterface
+final class NotFoundHttpExceptionEventSubscriber implements EventSubscriberInterface
 {
     private const KERNEL_EXCEPTION = 'onKernelException';
     private const CONTENT_TYPE = 'Content-Type';

@@ -35,3 +35,6 @@ services:
 
     api.exception_listener:
         class: App\EventSubscriber\*
+
+    chillerlan\QRCode\QRCode:
+        class: chillerlan\QRCode\QRCode
