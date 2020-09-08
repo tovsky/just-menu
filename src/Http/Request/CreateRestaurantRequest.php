@@ -4,6 +4,7 @@ namespace App\Http\Request;
 
 use App\Resolver\ArgumentValueInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Swagger\Annotations as SWG;
 
 class CreateRestaurantRequest implements ArgumentValueInterface
 {
@@ -29,8 +30,14 @@ class CreateRestaurantRequest implements ArgumentValueInterface
 
     private ?string $website = null;
 
+    /**
+     * @SWG\Property(property="wifi_name", type="string")
+     */
     private ?string $wifiName = null;
 
+    /**
+     * @SWG\Property(property="wifi_pass", type="string")
+     */
     private ?string $wifiPass = null;
 
     public function getName(): string
