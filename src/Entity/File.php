@@ -65,7 +65,7 @@ class File
     /**
      * @ORM\ManyToMany(targetEntity=Restaurant::class, mappedBy="files")
      */
-    private $restaurants;
+    private Collection $restaurants;
 
     public function __construct()
     {
