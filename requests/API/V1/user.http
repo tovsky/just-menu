@@ -4,8 +4,10 @@ Content-Type: application/json
 
 {
   "name": "григорий лепс",
-  "email": "leps-test-3@mail.ru",
+  "email": "leps-test-4@mail.ru",
   "phone": "99922929292",
   "position": "administrator",
   "password": "1111"
 }
+
+###

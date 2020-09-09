@@ -19,7 +19,7 @@ class JsonResponseMaker implements ResponseMakerInterface
         $this->serializer = $serializer;
     }
 
-    public function makeItemResponse($item, $context = [], $httpStatus = Response::HTTP_OK): JsonResponse
+    public function makeItemResponse($item, $context = [], $httpStatus = Response::HTTP_OK, string $comment = ''): JsonResponse
     {
         return new JsonResponse(
             [
@@ -27,7 +27,7 @@ class JsonResponseMaker implements ResponseMakerInterface
                     'item' => $this->serializer->normalize($item,  null, $context),
                 ],
                 'meta'  => [
-
+                    'comment' => $comment,
                 ]
             ],
             $httpStatus
