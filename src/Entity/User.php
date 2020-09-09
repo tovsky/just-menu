@@ -30,18 +30,18 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="uuid")
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "jwt:access", "jwt:refresh"})
      */
     private $uuid;
     /**
      * @ORM\Column(type="string", length=255, options={"comment":"ФИО"})
-     * @Groups({"user:read", "user:create"})
+     * @Groups({"user:read", "user:create", "jwr:access", "jwt:refresh"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, options={"comment":"Уникальный email"})
-     * @Groups({"user:read", "user:create"})
+     * @Groups({"user:read", "user:create", "jwt:access", "jwt:refresh"})
      */
     private $email;
 
