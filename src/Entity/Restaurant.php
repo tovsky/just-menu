@@ -74,7 +74,7 @@ class Restaurant
     /**
      * Файлы, загруженные для организации
      *
-     * @ORM\ManyToMany(targetEntity=File::class, inversedBy="restaurants")
+     * @ORM\OneToMany(targetEntity=File::class, mappedBy="restaurant", cascade={"persist"})
      * @SWG\Property(property="files", type="array", @SWG\Items(type="object"))
      */
     private Collection $files;
