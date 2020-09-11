@@ -78,12 +78,60 @@ class Restaurant
      */
     private Collection $users;
 
+    /**
+     * @ORM\Column(type="json", nullable=false, options={"comment":"Часы работы"})
+     */
+    private string $workTime;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, options={"comment":"Картинка на фон"})
+     */
+    private ?string $backgroundImg = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, options={"comment":"Логотип"})
+     */
+    private ?string $logo = null;
+
     public function __construct()
     {
         $this->id = Uuid::uuid4();
 
         $this->files = new ArrayCollection();
         $this->users = new ArrayCollection();
+
+        $arrayWorkTime = [
+            'Monday' => [
+                'timeFrom' => null,
+                'timeTo' => null
+            ],
+            'Tuesday' => [
+                'timeFrom' => null,
+                'timeTo' => null
+            ],
+            'Wednesday' => [
+                'timeFrom' => null,
+                'timeTo' => null
+            ],
+            'Thursday' => [
+                'timeFrom' => null,
+                'timeTo' => null
+            ],
+            'Friday' => [
+                'timeFrom' => null,
+                'timeTo' => null
+            ],
+            'Saturday' => [
+                'timeFrom' => null,
+                'timeTo' => null
+            ],
+            'Sunday' => [
+                'timeFrom' => null,
+                'timeTo' => null
+            ],
+
+        ];
+        $this->workTime = json_encode($arrayWorkTime);
     }
 
     public function getId(): UuidInterface
@@ -248,6 +296,42 @@ class Restaurant
     public function setWifiPass(?string $wifiPass): self
     {
         $this->wifiPass = $wifiPass;
+
+        return $this;
+    }
+
+    public function getWorkTime(): string
+    {
+        return $this->workTime;
+    }
+
+    public function setWorkTime(string $workTime): self
+    {
+        $this->workTime = $workTime;
+
+        return $this;
+    }
+
+    public function getBackgroundImg(): ?string
+    {
+        return $this->backgroundImg;
+    }
+
+    public function setBackgroundImg(?string $backgroundImg): self
+    {
+        $this->backgroundImg = $backgroundImg;
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): self
+    {
+        $this->logo = $logo;
 
         return $this;
     }
