@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service\Validator;
+namespace App\Security\Validator;
 
 
 interface JwtTokenValidatorInterface

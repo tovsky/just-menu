@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Validator;
+namespace App\Security\Validator;
 
 use App\Security\Key\KeyProviderInterface;
 use Lcobucci\JWT\Signer\Rsa;

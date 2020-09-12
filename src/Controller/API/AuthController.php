@@ -5,10 +5,13 @@ namespace App\Controller\API;
 use App\Builder\RefreshTokenBuilder;
 use App\Builder\TokenBuilder;
 use App\Http\Request\AuthLoginRequest;
+use App\Http\Request\RefreshTokensRequest;
 use App\Repository\RefreshTokenRepository;
 use App\Repository\UserRepository;
 use App\Service\Http\JsonResponseMaker;
+use App\Security\Validator\JwtTokenValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Lcobucci\JWT\Parser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -118,4 +121,58 @@ class AuthController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/refresh-tokens", name="api_refresh_tokens", methods={"POST"})
+     *
+     * @param RefreshTokensRequest $refreshTokensRequest
+     * @param JwtTokenValidatorInterface $jwtTokenValidator
+     * @param Parser $parser
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function refreshTokens(RefreshTokensRequest $refreshTokensRequest, JwtTokenValidatorInterface $jwtTokenValidator, Parser $parser): JsonResponse
+    {
+        if (false === $jwtTokenValidator->isValidSignature($refreshTokensRequest->getRefreshToken()) ||
+            $jwtTokenValidator->isTokenExpired($refreshTokensRequest->getRefreshToken())
+        ) {
+            return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_BAD_REQUEST, 'refresh token is not valid');
+        }
+
+        // разбор токена
+        $token = $parser->parse($refreshTokensRequest->getRefreshToken());
+
+        $user = $this->userRepository->findActiveUserByEmail(
+            json_decode($token->getClaim('user'))->email)
+        ;
+
+        // TODO убрать if (бросать из метода резпозитория exception с  404
+        if (null === $user) {
+            return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_BAD_REQUEST, 'login or password are empty or incorrect.');
+        }
+        /*
+         * для загруженного пользователя проверяем наличие refresh
+         * проверка времени действия по дате эксприации из БД  и также сравниваем токен с имеющимся токеном в БД
+         */
+        $refreshTokenEntity = $this->refreshTokenRepository->findOneBy(['user' => $user->getId()]);
+        if (null === $refreshTokenEntity ||
+            $refreshTokenEntity->getValue() !== $refreshTokensRequest->getRefreshToken() ||
+            new \DateTime() > $refreshTokenEntity->getExpirationAt()
+        ) {
+            return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_UNAUTHORIZED, 'refresh token is not valid. register required');
+        }
+
+        // access и refresh как строки
+        $accessTokenAsString = (string)$this->tokenBuilder->buildAccessToken($user);
+        $refreshTokenAsString = (string)$this->tokenBuilder->buildRefreshToken($user);
+
+        //значение обновленного refresh перезаписываем в таблицу, сохранив в таблице старое время экспирации.
+        $refreshTokenEntity->setValue($refreshTokenAsString);
+        $this->em->persist($refreshTokenEntity);
+        $this->em->flush();
+
+        return $this->json([
+            'accessToken' => $accessTokenAsString,
+            'refreshToken' => $refreshTokenAsString
+        ]);
+    }
 }

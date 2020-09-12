@@ -42,6 +42,8 @@ services:
 
     Lcobucci\JWT\Signer\Rsa\Sha256: ~
 
+    Lcobucci\JWT\Parser: ~
+
     App\Security\Key\KeyProvider:
         public: true
         arguments:
