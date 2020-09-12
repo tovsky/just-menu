@@ -7,6 +7,7 @@ use App\Http\Request\AuthLoginRequest;
 use App\Repository\UserRepository;
 use App\Service\Http\JsonResponseMaker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -58,23 +59,18 @@ class AuthController extends AbstractController
     /**
      * @Route("/login", name="api_login", methods={"POST"})
      *
-     * TODO ждем Resolver от Tweeker
+     * @param AuthLoginRequest $loginRequest
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function login(Request $request)
+    public function login(AuthLoginRequest $loginRequest)
     {
-        /** @var AuthLoginRequest $loginRequest */
-        $loginRequest = $this->serializer->deserialize(
-            $request->getContent(),
-            AuthLoginRequest::class,
-            JsonEncoder::FORMAT
-        );
-
-        if (null === $loginRequest->getLogin() || null === $loginRequest->getPassword()) {
+        if (null === $loginRequest->getemail() || null === $loginRequest->getPassword()) {
             return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_BAD_REQUEST, 'login or password are empty or incorrect.');
         }
 
         // ищем активного пользователя по email
-        $user = $this->userRepository->findActiveUserByEmail($loginRequest->getLogin());
+        $user = $this->userRepository->findActiveUserByEmail($loginRequest->getEmail());
 
         if (null === $user) {
             return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_BAD_REQUEST, 'login or password are empty or incorrect.');

@@ -2,32 +2,33 @@
 
 namespace App\Http\Request;
 
+use App\Resolver\ArgumentValueInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 // TODO в дальнейшем здесь должно быть            implements ArgumentValueInterface
-class AuthLoginRequest
+class AuthLoginRequest implements ArgumentValueInterface
 {
     /**
      * @Assert\Email()
      */
-    private ?string $login;
+    private ?string $email;
 
     private ?string $password;
 
     /**
      * @return null|string
      */
-    public function getLogin(): ?string
+    public function getemail(): ?string
     {
-        return $this->login;
+        return $this->email;
     }
 
     /**
-     * @param string $login
+     * @param string $email
      */
-    public function setLogin(string $login): void
+    public function setemail(string $email): void
     {
-        $this->login = $login;
+        $this->email = $email;
     }
 
     /**
