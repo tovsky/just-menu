@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Swagger\Annotations as SWG;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RestaurantRepository", repositoryClass=RestaurantRepository::class)
@@ -17,6 +18,7 @@ class Restaurant
 {
     /**
      * @ORM\Id
+     * @SWG\Property(property="id", type="string")
      * @ORM\Column(type="uuid")
      */
     private UuidInterface $id;
@@ -53,16 +55,19 @@ class Restaurant
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Сайт ресторана"})
+     * @SWG\Property(property="web_site", type="string")
      */
     private ?string $webSite = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Наименование wi-fi"})
+     * @SWG\Property(property="wifi_name", type="string")
      */
     private ?string $wifiName = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Пароль от wi-fi"})
+     * @SWG\Property(property="wifi_pass", type="string")
      */
     private ?string $wifiPass = null;
 
@@ -70,21 +75,25 @@ class Restaurant
      * Файлы, загруженные для организации
      *
      * @ORM\ManyToMany(targetEntity=File::class, inversedBy="restaurants")
+     * @SWG\Property(property="files", type="array", @SWG\Items(type="object"))
      */
     private Collection $files;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="restaurants")
+     * @SWG\Property(property="users", type="array", @SWG\Items(type="object"))
      */
     private Collection $users;
 
     /**
      * @ORM\Column(type="json", nullable=false, options={"comment":"Часы работы"})
+     * @SWG\Property(property="work_time", type="string")
      */
     private string $workTime;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Картинка на фон"})
+     * @SWG\Property(property="background_img", type="string")
      */
     private ?string $backgroundImg = null;
 
