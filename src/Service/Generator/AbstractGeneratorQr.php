@@ -17,5 +17,5 @@ abstract class AbstractGeneratorQr
         $this->urlGenerator = $urlGenerator;
     }
 
-    abstract public function generate(string $slug, string $saveToPath): string;
+    abstract public function generate(array $keys, string $saveToPath): string;
 }

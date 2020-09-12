@@ -16,7 +16,6 @@ final class NotFoundHttpExceptionEventSubscriber implements EventSubscriberInter
 {
     private const KERNEL_EXCEPTION = 'onKernelException';
     private const CONTENT_TYPE = 'Content-Type';
-    private const NOT_FOUND_ERROR_MESSAGE = 'Неправильный URL-адрес';
 
     public static function getSubscribedEvents(): array
     {
@@ -35,7 +34,7 @@ final class NotFoundHttpExceptionEventSubscriber implements EventSubscriberInter
     {
         return new JsonResponse(
             [
-                'message' => self::NOT_FOUND_ERROR_MESSAGE . ': ' . $event->getThrowable()->getMessage()
+                'message' => $event->getThrowable()->getMessage()
             ],
             Response::HTTP_NOT_FOUND,
             [self::CONTENT_TYPE => JsonEncoder::FORMAT]

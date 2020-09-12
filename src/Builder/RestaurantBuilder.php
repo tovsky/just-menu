@@ -3,7 +3,7 @@
 namespace App\Builder;
 
 use App\Entity\Restaurant;
-use App\Http\Request\CreateRestaurantRequest;
+use App\Http\Restaurant\Request\CreateRestaurantRequest;
 use App\Service\Generator\GeneratorQrRestaurant;
 use App\Service\Generator\GeneratorSlug;
 
@@ -33,7 +33,7 @@ class RestaurantBuilder
             ->setWifiName($request->getWifiName())
             ->setWifiPass($request->getWifiPass());
 
-        $this->qrGenerate->generate($restaurant->getSlug(), $restaurant->getId()->__toString());
+        $this->qrGenerate->generate(['slug' =>$restaurant->getSlug()], $restaurant->getId()->__toString());
 
         return $restaurant;
     }
