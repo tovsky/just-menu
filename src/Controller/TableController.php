@@ -81,7 +81,7 @@ class TableController
      *         description="Successful operation"
      *     )
      * )
-     * @Route("/api/v1/restaurant/{slug}/table/{id}", name="api_table_get", methods={"GET"})
+     * @Route("/api/v1/restaurant/{slug}/tables/{id}", name="api_table_get", methods={"GET"})
      */
     public function getTable(Table $table)
     {

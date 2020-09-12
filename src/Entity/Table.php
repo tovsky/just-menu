@@ -50,6 +50,7 @@ class Table
 
     /**
      * @ORM\ManyToOne(targetEntity=Restaurant::class, inversedBy="tables")
+     * @Groups({"tables:read"})
      */
     private Restaurant $restaurant;
 
