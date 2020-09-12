@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Restoraunt;
+use App\Entity\Restaurant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Restoraunt|null find($id, $lockMode = null, $lockVersion = null)
- * @method Restoraunt|null findOneBy(array $criteria, array $orderBy = null)
- * @method Restoraunt[]    findAll()
- * @method Restoraunt[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Restaurant|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Restaurant|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Restaurant[]    findAll()
+ * @method Restaurant[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class RestorauntRepository extends ServiceEntityRepository
+class RestaurantRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Restoraunt::class);
+        parent::__construct($registry, Restaurant::class);
     }
 
     // /**
-    //  * @return Restoraunt[] Returns an array of Restoraunt objects
+    //  * @return Restaurant[] Returns an array of Restaurant objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class RestorauntRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Restoraunt
+    public function findOneBySomeField($value): ?Restaurant
     {
         return $this->createQueryBuilder('r')
             ->andWhere('r.exampleField = :val')

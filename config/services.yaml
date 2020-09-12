@@ -30,6 +30,16 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    App\Resolver\ArgumentValueResolver:
+        tags:
+            - { name: controller.argument_value_resolver, priority: 50 }
+
+    api.exception_listener:
+        class: App\EventSubscriber\*
+
+    chillerlan\QRCode\QRCode:
+        class: chillerlan\QRCode\QRCode
+
     Lcobucci\JWT\Signer\Rsa\Sha256: ~
 
     App\Security\Key\KeyProvider:

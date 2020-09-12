@@ -63,13 +63,13 @@ class File
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Restoraunt::class, mappedBy="files")
+     * @ORM\ManyToMany(targetEntity=Restaurant::class, mappedBy="files")
      */
-    private $restoraunts;
+    private Collection $restaurants;
 
     public function __construct()
     {
-        $this->restoraunts = new ArrayCollection();
+        $this->restaurants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,28 +150,28 @@ class File
     }
 
     /**
-     * @return Collection|Restoraunt[]
+     * @return Collection|Restaurant[]
      */
-    public function getRestoraunts(): Collection
+    public function getRestaurants(): Collection
     {
-        return $this->restoraunts;
+        return $this->restaurants;
     }
 
-    public function addRestoraunt(Restoraunt $restoraunt): self
+    public function addRestaurant(Restaurant $restaurant): self
     {
-        if (!$this->restoraunts->contains($restoraunt)) {
-            $this->restoraunts[] = $restoraunt;
-            $restoraunt->addFile($this);
+        if (!$this->restaurants->contains($restaurant)) {
+            $this->restaurants[] = $restaurant;
+            $restaurant->addFile($this);
         }
 
         return $this;
     }
 
-    public function removeRestoraunt(Restoraunt $restoraunt): self
+    public function removeRestaurant(Restaurant $restaurant): self
     {
-        if ($this->restoraunts->contains($restoraunt)) {
-            $this->restoraunts->removeElement($restoraunt);
-            $restoraunt->removeFile($this);
+        if ($this->restaurants->contains($restaurant)) {
+            $this->restaurants->removeElement($restaurant);
+            $restaurant->removeFile($this);
         }
 
         return $this;

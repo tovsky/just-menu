@@ -24,7 +24,7 @@ class JsonResponseMaker implements ResponseMakerInterface
         return new JsonResponse(
             [
                 'data' => [
-                    'item' => $this->serializer->normalize($item,  null, $context),
+                    $this->serializer->normalize($item,  null, $context),
                 ],
                 'meta'  => [
                     'comment' => $comment,

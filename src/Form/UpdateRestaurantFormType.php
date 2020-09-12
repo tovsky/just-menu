@@ -2,30 +2,25 @@
 
 namespace App\Form;
 
-use App\Entity\File;
+use App\Http\Request\UpdateRestaurantRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FileType extends AbstractType
+class UpdateRestaurantFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('link')
-            ->add('phisicalFileName')
-            ->add('name')
-            ->add('isActive')
-            ->add('createdAt')
-            ->add('user')
-            ->add('restaurants')
+            ->add('description')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => File::class,
+            'data_class' => UpdateRestaurantRequest::class,
+            'csrf_protection' => false,
         ]);
     }
 }

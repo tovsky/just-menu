@@ -72,7 +72,7 @@ class User implements UserInterface
      * @ORM\Column(type="boolean", options={"comment":"Активный подтвержденный пользователь"})
      * @Groups({"user:read"})
      */
-    private $isActive = false;
+    private bool $isActive = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Subscription::class, mappedBy="user")
@@ -87,22 +87,21 @@ class User implements UserInterface
     private $files;
 
     /**
-     * @ORM\OneToMany(targetEntity=Restoraunt::class, mappedBy="user")
-     * @Groups({"user:read"})
-     */
-    private $restoraunts;
-
-    /**
      * @ORM\Column(type="boolean")
      * @Groups({"user:read"})
      */
     private $isVerified = false;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Restaurant::class, mappedBy="users")
+     */
+    private $restaurants;
+
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
         $this->files = new ArrayCollection();
-        $this->restoraunts = new ArrayCollection();
+        $this->restaurants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -296,37 +295,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Restoraunt[]
-     */
-    public function getRestoraunts(): Collection
-    {
-        return $this->restoraunts;
-    }
-
-    public function addRestoraunt(Restoraunt $restoraunt): self
-    {
-        if (!$this->restoraunts->contains($restoraunt)) {
-            $this->restoraunts[] = $restoraunt;
-            $restoraunt->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRestoraunt(Restoraunt $restoraunt): self
-    {
-        if ($this->restoraunts->contains($restoraunt)) {
-            $this->restoraunts->removeElement($restoraunt);
-            // set the owning side to null (unless already changed)
-            if ($restoraunt->getUser() === $this) {
-                $restoraunt->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function isVerified(): bool
     {
         return $this->isVerified;
@@ -342,6 +310,34 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * @return Collection|Restaurant[]
+     */
+    public function getRestaurants(): Collection
+    {
+        return $this->restaurants;
+    }
+
+    public function addRestaurant(Restaurant $restaurant): self
+    {
+        if (!$this->restaurants->contains($restaurant)) {
+            $this->restaurants[] = $restaurant;
+            $restaurant->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRestaurant(Restaurant $restaurant): self
+    {
+        if ($this->restaurants->contains($restaurant)) {
+            $this->restaurants->removeElement($restaurant);
+            $restaurant->removeUser($this);
+        }
+
+        return $this;
     }
 
     public function getUuid()
