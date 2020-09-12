@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/api/auth")
@@ -72,17 +73,12 @@ class AuthController extends AbstractController
             return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_BAD_REQUEST, 'login or password are empty or incorrect.');
         }
 
-        // загружаем пользователя по логину и проверяем статус, что не заблокирован
-        $user = $this->userRepository->findUserByEmail($loginRequest->getLogin());
+        // ищем активного пользователя по email
+        $user = $this->userRepository->findActiveUserByEmail($loginRequest->getLogin());
 
         if (null === $user) {
             return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_BAD_REQUEST, 'login or password are empty or incorrect.');
         }
-
-        if (false === $user->getIsActive()) {
-            return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_BAD_REQUEST, 'user is blocked');
-        }
-
         if (false === $this->userPasswordEncoder->isPasswordValid($user, $loginRequest->getPassword())) {
             return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_BAD_REQUEST, 'login or password are empty or incorrect.');
         }
