@@ -3,45 +3,37 @@
 namespace App\Http\Request;
 
 use App\Resolver\ArgumentValueInterface;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
 
-// TODO в дальнейшем здесь должно быть            implements ArgumentValueInterface
 class AuthLoginRequest implements ArgumentValueInterface
 {
     /**
-     * @Assert\Email()
+     * @Assert\Email(groups={"App\Http\Request\AuthLoginRequest"})
+     * @Assert\NotBlank(groups={"App\Http\Request\AuthLoginRequest"})
      */
-    private ?string $email;
-
-    private ?string $password;
-
+    private string $email;
+    
     /**
-     * @return null|string
+     * @Assert\NotBlank(groups={"App\Http\Request\AuthLoginRequest"})
      */
-    public function getemail(): ?string
+    private string $password;
+
+    public function getemail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     */
     public function setemail(string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     */
     public function setPassword(string $password): void
     {
         $this->password = $password;
