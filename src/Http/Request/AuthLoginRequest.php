@@ -3,7 +3,6 @@
 namespace App\Http\Request;
 
 use App\Resolver\ArgumentValueInterface;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class AuthLoginRequest implements ArgumentValueInterface
