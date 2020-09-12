@@ -4,6 +4,7 @@ namespace App\Http\Table\Response;
 
 use App\Entity\Table;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Swagger\Annotations as SWG;
 
 class CreateTablesResponse
 {
@@ -11,6 +12,7 @@ class CreateTablesResponse
     /**
      * @var Table[]
      * @Groups({"tables:read"})
+     * @SWG\Property(property="tables", type="array", @SWG\Items(type="object"))
      */
     private array $tables;
 

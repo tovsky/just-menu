@@ -121,6 +121,7 @@ class Restaurant
     /**
      * @ORM\OneToMany(targetEntity=Table::class, mappedBy="restaurant", cascade={"persist"})
      * @Groups({"restaurant:read"})
+     * @SWG\Property(property="tables", type="array", @SWG\Items(type="object"))
      */
     private Collection $tables;
 

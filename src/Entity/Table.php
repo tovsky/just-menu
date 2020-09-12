@@ -8,6 +8,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Swagger\Annotations as SWG;
 
 /**
  * @ORM\Entity(repositoryClass=TableRepository::class)
@@ -17,6 +18,7 @@ class Table
 {
     /**
      * @ORM\Id()
+     * @SWG\Property(property="id", type="string")
      * @ORM\Column(type="uuid")
      * @Groups({"restaurant:read","tables:read"})
      */
@@ -97,7 +99,7 @@ class Table
         return $this;
     }
 
-    public function getEmployee(): ?User
+    public function getEmployee(): ?UserInterface
     {
         return $this->employee;
     }
@@ -109,12 +111,12 @@ class Table
         return $this;
     }
 
-    public function getRestaurant(): ?Restaurant
+    public function getRestaurant(): Restaurant
     {
         return $this->restaurant;
     }
 
-    public function setRestaurant(?Restaurant $restaurant): self
+    public function setRestaurant(Restaurant $restaurant): self
     {
         $this->restaurant = $restaurant;
 
