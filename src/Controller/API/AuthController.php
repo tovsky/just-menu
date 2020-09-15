@@ -132,6 +132,7 @@ class AuthController extends AbstractController
      */
     public function refreshTokens(RefreshTokensRequest $refreshTokensRequest, JwtTokenValidatorInterface $jwtTokenValidator, Parser $parser): JsonResponse
     {
+        // TODO вынести в валидатор
         if (false === $jwtTokenValidator->isValidSignature($refreshTokensRequest->getRefreshToken()) ||
             $jwtTokenValidator->isTokenExpired($refreshTokensRequest->getRefreshToken())
         ) {
