@@ -4,6 +4,7 @@ namespace App\Controller\API;
 
 use App\Builder\UserBuilder;
 use App\Entity\User;
+use App\Http\Request\NewUserRequest;
 use App\Repository\UserRepository;
 use App\Service\Http\JsonResponseMaker;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,10 +49,10 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="api_user_save_one", methods={"POST"})
      */
-    public function saveItem(Request $request,UserBuilder $userBuilder): JsonResponse
+    public function saveItem(NewUserRequest $newUserRequest, UserBuilder $userBuilder): JsonResponse
     {
         // TODO использовать резолвер
-        $user = $userBuilder->build($request);
+        $user = $userBuilder->build($newUserRequest);
 
         $this->em->persist($user);
         $this->em->flush();
