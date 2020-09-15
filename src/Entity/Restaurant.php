@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RestaurantRepository", repositoryClass=RestaurantRepository::class)
@@ -19,54 +20,64 @@ class Restaurant
     /**
      * @ORM\Id
      * @SWG\Property(property="id", type="string")
+     * @Groups({"restaurant:read", "tables:read"})
      * @ORM\Column(type="uuid")
      */
     private UuidInterface $id;
 
     /**
      * @ORM\Column(type="string", nullable=false, options={"comment":"Название ресторана"})
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", nullable=false, options={"comment":"Слаг для ресторана"})
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private ?string $slug = null;
 
     /**
      * @ORM\Column(type="text", nullable=true, options={"comment":"Описание ресторана"})
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private ?string $description = null;
 
     /**
      * @ORM\Column(type="string", nullable=false, options={"comment":"Месторасположение ресторана"})
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private string $address;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Телефон ресторана"})
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private ?string $phone = null;
 
     /**
      * @ORM\Column(type="string", nullable=false, options={"comment":"Почта ресторана"})
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private string $email;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Сайт ресторана"})
+     * @Groups({"restaurant:read", "tables:read"})
      * @SWG\Property(property="web_site", type="string")
      */
     private ?string $webSite = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Наименование wi-fi"})
+     * @Groups({"restaurant:read", "tables:read"})
      * @SWG\Property(property="wifi_name", type="string")
      */
     private ?string $wifiName = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Пароль от wi-fi"})
+     * @Groups({"restaurant:read", "tables:read"})
      * @SWG\Property(property="wifi_pass", type="string")
      */
     private ?string $wifiPass = null;
@@ -76,31 +87,43 @@ class Restaurant
      *
      * @ORM\ManyToMany(targetEntity=File::class, inversedBy="restaurants")
      * @SWG\Property(property="files", type="array", @SWG\Items(type="object"))
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private Collection $files;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="restaurants")
      * @SWG\Property(property="users", type="array", @SWG\Items(type="object"))
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private Collection $users;
 
     /**
      * @ORM\Column(type="json", nullable=false, options={"comment":"Часы работы"})
      * @SWG\Property(property="work_time", type="string")
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private string $workTime;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Картинка на фон"})
      * @SWG\Property(property="background_img", type="string")
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private ?string $backgroundImg = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Логотип"})
+     * @Groups({"restaurant:read", "tables:read"})
      */
     private ?string $logo = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Table::class, mappedBy="restaurant", cascade={"persist"})
+     * @Groups({"restaurant:read"})
+     * @SWG\Property(property="tables", type="array", @SWG\Items(type="object"))
+     */
+    private Collection $tables;
 
     public function __construct()
     {
@@ -141,6 +164,7 @@ class Restaurant
 
         ];
         $this->workTime = json_encode($arrayWorkTime);
+        $this->tables = new ArrayCollection();
     }
 
     public function getId(): UuidInterface
@@ -341,6 +365,37 @@ class Restaurant
     public function setLogo(?string $logo): self
     {
         $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Table[]
+     */
+    public function getTables(): Collection
+    {
+        return $this->tables;
+    }
+
+    public function addTable(Table $table): self
+    {
+        if (!$this->tables->contains($table)) {
+            $this->tables[] = $table;
+            $table->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTable(Table $table): self
+    {
+        if ($this->tables->contains($table)) {
+            $this->tables->removeElement($table);
+            // set the owning side to null (unless already changed)
+            if ($table->getRestaurant() === $this) {
+                $table->setRestaurant(null);
+            }
+        }
 
         return $this;
     }

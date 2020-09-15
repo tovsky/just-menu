@@ -3,7 +3,7 @@
 namespace App\Service\Updater;
 
 use App\Entity\Restaurant;
-use App\Http\Request\UpdateRestaurantRequest;
+use App\Http\Restaurant\Request\UpdateRestaurantRequest;
 
 class RestaurantUpdater
 {

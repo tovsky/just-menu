@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Builder\RestaurantBuilder;
 use App\Entity\Restaurant;
-use App\Http\Request\CreateRestaurantRequest;
-use App\Http\Request\UpdateRestaurantRequest;
+use App\Http\Restaurant\Request\CreateRestaurantRequest;
+use App\Http\Restaurant\Request\UpdateRestaurantRequest;
 use App\Service\Http\ResponseMakerInterface;
 use App\Service\Updater\RestaurantUpdater;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,8 +59,7 @@ class RestaurantController extends AbstractController
         $restaurant = $builder->build($request);
         $em->persist($restaurant);
         $em->flush();
-
-        return $this->responseMaker->makeItemResponse($restaurant, [], Response::HTTP_CREATED);
+        return $this->responseMaker->makeItemResponse($restaurant, ['groups' => 'restaurant:read'], Response::HTTP_CREATED);
     }
 
     /**
@@ -79,7 +78,7 @@ class RestaurantController extends AbstractController
      */
     public function getItem(Restaurant $restaurant): Response
     {
-        return $this->responseMaker->makeItemResponse($restaurant, [], Response::HTTP_OK);
+        return $this->responseMaker->makeItemResponse($restaurant, ['groups' => 'restaurant:read'], Response::HTTP_OK);
     }
 
     /**
@@ -117,7 +116,7 @@ class RestaurantController extends AbstractController
         $em->persist($restaurant);
         $em->flush();
 
-        return $this->responseMaker->makeItemResponse($restaurant, [], Response::HTTP_OK);
+        return $this->responseMaker->makeItemResponse($restaurant, ['groups' => 'restaurant:read'], Response::HTTP_OK);
     }
 
 }
