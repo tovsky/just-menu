@@ -59,10 +59,10 @@ class TokenBuilder
     public function buildRefreshToken(User $user): Token
     {
         $time = time() + $this->expirationTimeRefresh;
-        $accessToken = (new Builder())->expiresAt($time)
+        $refreshToken = (new Builder())->expiresAt($time)
             ->withClaim('user', $this->serializer->serialize($user, 'json', ['groups' => 'jwt:refresh']))
             ->getToken($this->singer, $this->keyProvider->getPrivateKey());
 
-        return $accessToken;
+        return $refreshToken;
     }
 }
