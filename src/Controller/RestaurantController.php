@@ -72,7 +72,6 @@ class RestaurantController extends AbstractController
      *         description="Successful operation",
      *         @SWG\Property(property="data", ref=@Model(type=Restaurant::class))
      *     )
-     *     )
      * )
      * @Route("/{slug}", name="get_restaurant", methods={"GET"})
      */

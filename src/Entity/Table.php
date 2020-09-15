@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TableRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,37 +21,39 @@ class Table
      * @ORM\Id()
      * @SWG\Property(property="id", type="string")
      * @ORM\Column(type="uuid")
-     * @Groups({"restaurant:read","tables:read"})
+     * @Groups({"restaurant:read","tables:read","table:read"})
      */
     private UuidInterface $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read","table:read"})
      */
     private int $number;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read","table:read"})
      */
     private string $qr;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read","table:read"})
      */
     private string $status;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read","table:read"})
+     * @SWG\Property(property="restaurant", ref=@Model(type=User::class))
      */
     private ?UserInterface $employee = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Restaurant::class, inversedBy="tables")
-     * @Groups({"tables:read"})
+     * @Groups({"table:read"})
+     * @SWG\Property(property="restaurant", ref=@Model(type=Restaurant::class))
      */
     private Restaurant $restaurant;
 
