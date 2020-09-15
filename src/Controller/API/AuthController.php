@@ -24,37 +24,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AuthController extends AbstractController
 {
-    /**
-     * @var JsonResponseMaker
-     */
-    private $jsonResponseMaker;
-    /**
-     * @var UserRepository
-     */
+    private JsonResponseMaker $jsonResponseMaker;
+
     private UserRepository $userRepository;
-    /**
-     * @var SerializerInterface
-     */
+
     private SerializerInterface $serializer;
-    /**
-     * @var UserPasswordEncoderInterface
-     */
+
     private UserPasswordEncoderInterface $userPasswordEncoder;
-    /**
-     * @var TokenBuilder
-     */
+
     private TokenBuilder $tokenBuilder;
-    /**
-     * @var RefreshTokenRepository
-     */
+
     private RefreshTokenRepository $refreshTokenRepository;
-    /**
-     * @var EntityManagerInterface
-     */
+
     private EntityManagerInterface $em;
-    /**
-     * @var RefreshTokenBuilder
-     */
+
     private RefreshTokenBuilder $refreshTokenBuilder;
 
     public function __construct(
