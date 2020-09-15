@@ -6,7 +6,9 @@ use App\Builder\TableBuilder;
 use App\Entity\Restaurant;
 use App\Entity\Table;
 use App\Http\Table\Request\CreateTablesRequest;
+use App\Http\Table\Request\UpdateTableRequest;
 use App\Http\Table\Response\CreateTablesResponse;
+use App\Http\Table\Response\Tables;
 use App\Service\Http\ResponseMakerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -26,7 +28,7 @@ class TableController
     /**
      * @SWG\Post(
      *     summary="Create tables",
-     *     tags={"Restaurant"},
+     *     tags={"Table"},
      *     description="Создание сталов для ресторана",
      *     @SWG\Parameter(
      *          name="body",
@@ -73,18 +75,44 @@ class TableController
     //@TODO починить ответ
     /**
      * @SWG\Get(
-     *     summary="Get restaurant by slug",
-     *     tags={"Restaurant"},
-     *     description="Получение ресторана по слагу",
+     *     summary="Get tables",
+     *     tags={"Table"},
+     *     description="Получение столов ресторана",
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @SWG\Property(property="data", ref=@Model(type=Tables::class))
+     *     )
+     * )
+     * @Route("/api/v1/restaurant/{slug}/tables", name="api_tables_get", methods={"GET"})
+     */
+    public function getTables(Restaurant $restaurant): Response
+    {
+        $tables = [];
+        foreach ($restaurant->getTables() as $table){
+            $tables[] = $table;
+        }
+
+        $response = new Tables();
+        $response->setTables($tables);
+
+        return $this->responseMaker->makeItemResponse($response, ['groups' => 'tables:read'], Response::HTTP_OK);
+    }
+
+    /**
+     * @SWG\Get(
+     *     summary="Get single table by id",
+     *     tags={"Table"},
+     *     description="Получение стола по id",
      *     @SWG\Response(
      *         response=200,
      *         description="Successful operation"
      *     )
      * )
-     * @Route("/api/v1/restaurant/{slug}/tables/{id}", name="api_table_get", methods={"GET"})
+     * @Route("/api/v1/table/{id}", name="api_table_get", methods={"GET"})
      */
-    public function getTable(Table $table)
+    public function getSingleTable(Table $table): Response
     {
-        return $this->responseMaker->makeItemResponse($table, ['groups' => 'tables:read'], Response::HTTP_OK);
+        return $this->responseMaker->makeItemResponse($table, ['groups' => 'table:read'], Response::HTTP_OK);
     }
 }

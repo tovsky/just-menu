@@ -20,64 +20,64 @@ class Restaurant
     /**
      * @ORM\Id
      * @SWG\Property(property="id", type="string")
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      * @ORM\Column(type="uuid")
      */
     private UuidInterface $id;
 
     /**
      * @ORM\Column(type="string", nullable=false, options={"comment":"Название ресторана"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", nullable=false, options={"comment":"Слаг для ресторана"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private ?string $slug = null;
 
     /**
      * @ORM\Column(type="text", nullable=true, options={"comment":"Описание ресторана"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private ?string $description = null;
 
     /**
      * @ORM\Column(type="string", nullable=false, options={"comment":"Месторасположение ресторана"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private string $address;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Телефон ресторана"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private ?string $phone = null;
 
     /**
      * @ORM\Column(type="string", nullable=false, options={"comment":"Почта ресторана"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private string $email;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Сайт ресторана"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      * @SWG\Property(property="web_site", type="string")
      */
     private ?string $webSite = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Наименование wi-fi"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      * @SWG\Property(property="wifi_name", type="string")
      */
     private ?string $wifiName = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Пароль от wi-fi"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      * @SWG\Property(property="wifi_pass", type="string")
      */
     private ?string $wifiPass = null;
@@ -87,34 +87,34 @@ class Restaurant
      *
      * @ORM\ManyToMany(targetEntity=File::class, inversedBy="restaurants")
      * @SWG\Property(property="files", type="array", @SWG\Items(type="object"))
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private Collection $files;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="restaurants")
      * @SWG\Property(property="users", type="array", @SWG\Items(type="object"))
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private Collection $users;
 
     /**
      * @ORM\Column(type="json", nullable=false, options={"comment":"Часы работы"})
      * @SWG\Property(property="work_time", type="string")
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private string $workTime;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Картинка на фон"})
      * @SWG\Property(property="background_img", type="string")
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private ?string $backgroundImg = null;
 
     /**
      * @ORM\Column(type="string", nullable=true, options={"comment":"Логотип"})
-     * @Groups({"restaurant:read", "tables:read"})
+     * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
     private ?string $logo = null;
 
