@@ -70,7 +70,7 @@ class RefreshToken
         return $this;
     }
 
-    public function getUser(): ?UserInterface
+    public function getUser(): UserInterface
     {
         return $this->user;
     }
