@@ -5,6 +5,7 @@ namespace App\Controller\API;
 use App\Builder\RefreshTokenBuilder;
 use App\Builder\TokenBuilder;
 use App\Http\Request\AuthLoginRequest;
+use App\Http\Request\AuthLogoutRequest;
 use App\Http\Request\RefreshTokensRequest;
 use App\Repository\RefreshTokenRepository;
 use App\Repository\UserRepository;
@@ -99,6 +100,33 @@ class AuthController extends AbstractController
             'accessToken' => $accessTokenAsString,
             'refreshToken' => $refreshTokenAsString
         ]);
+    }
+
+    /**
+     * @Route("/logout", name="api_logout", methods={"POST"})
+     *
+     * @param AuthLogoutRequest $logoutRequest
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function logout(AuthLogoutRequest $logoutRequest)
+    {
+        $user = $this->userRepository->findActiveUserByEmail($logoutRequest->getemail());
+
+        // TODO убрать if (бросать из метода резпозитория exception с  404
+        if (null === $user) {
+            return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_BAD_REQUEST, 'user not found');
+        }
+
+        $refreshTokenEntity = $this->refreshTokenRepository->findOneBy(['user' => $user->getId()]);
+
+        // если для этого юзера есть рефреш токе, то удаляем
+        if (null !== $refreshTokenEntity) {
+            $this->em->remove($refreshTokenEntity);
+            $this->em->flush();
+        }
+
+        return $this->json([]);
     }
 
     /**

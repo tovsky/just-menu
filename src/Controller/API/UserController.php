@@ -57,7 +57,7 @@ class UserController extends AbstractController
         $this->em->persist($user);
         $this->em->flush();
 
-        return $this->jsonResponseMaker->makeItemResponse($user, ['groups' => ['user:create']], Response::HTTP_CREATED);
+        return $this->jsonResponseMaker->makeItemResponse($user, ['groups' => ['user:red']], Response::HTTP_CREATED);
     }
 
     /**
