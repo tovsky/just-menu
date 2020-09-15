@@ -14,10 +14,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Lcobucci\JWT\Parser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -107,7 +105,6 @@ class AuthController extends AbstractController
         $oldRefreshToken = $this->refreshTokenRepository->findOneBy(['user' => $user->getId()]);
         if (null !== $oldRefreshToken) {
             $this->em->remove($oldRefreshToken);
-            $this->em->flush();
         }
 
         // создаем новый объект refresh token и сохраняем
