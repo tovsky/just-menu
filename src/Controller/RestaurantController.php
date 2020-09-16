@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 
 /**
- * @Route("/api/v1/restaurant")
+ * @Route("/api/v1/restaurants")
  */
 class RestaurantController extends AbstractController
 {
@@ -49,7 +49,7 @@ class RestaurantController extends AbstractController
      *         @SWG\Property(property="data", ref=@Model(type=Restaurant::class))
      *      )
      * )
-     * @Route("/", name="create_restauranta" ,methods={"POST"})
+     * @Route("/", name="api_restaurant_create" ,methods={"POST"})
      */
     public function create(
         CreateRestaurantRequest $request,
@@ -73,7 +73,7 @@ class RestaurantController extends AbstractController
      *         @SWG\Property(property="data", ref=@Model(type=Restaurant::class))
      *     )
      * )
-     * @Route("/{slug}", name="get_restaurant", methods={"GET"})
+     * @Route("/{slug}", name="api_restaurant_get_one", methods={"GET"})
      */
     public function getItem(Restaurant $restaurant): Response
     {
@@ -81,7 +81,7 @@ class RestaurantController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="update_restaurant", methods={"PUT"})
+     * @Route("/{slug}", name="api_restaurant_update", methods={"PUT"})
      * @SWG\Put(
      *     summary="Update restaurant",
      *     tags={"Restaurant"},

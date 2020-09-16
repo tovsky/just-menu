@@ -48,7 +48,7 @@ class TableController extends AbstractController
      *         @SWG\Property(property="data", ref=@Model(type=CreateTablesResponse::class))
      *      )
      * )
-     * @Route("/api/v1/restaurant/{slug}/tables", name="api_tables_create", methods={"POST"})
+     * @Route("/api/v1/restaurants/{slug}/tables", name="api_restaurant_create_one_table", methods={"POST"})
      */
     public function createTables(
         CreateTablesRequest $createTablesRequest,
@@ -85,7 +85,7 @@ class TableController extends AbstractController
      *         @SWG\Property(property="data", ref=@Model(type=Tables::class))
      *     )
      * )
-     * @Route("/api/v1/restaurant/{slug}/tables", name="api_tables_get", methods={"GET"})
+     * @Route("/api/v1/restaurants/{slug}/tables", name="api_restaurant_get_all_tables", methods={"GET"})
      */
     public function getTables(Restaurant $restaurant): Response
     {
@@ -110,7 +110,7 @@ class TableController extends AbstractController
      *         description="Successful operation"
      *     )
      * )
-     * @Route("/api/v1/table/{id}", name="api_table_get", methods={"GET"})
+     * @Route("/api/v1/tables/{id}", name="api_table_get_one", methods={"GET"})
      */
     public function getSingleTable(Table $table): Response
     {

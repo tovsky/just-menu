@@ -92,7 +92,7 @@ class Restaurant
     private Collection $files;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="restaurants")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="restaurants", cascade={"persist"})
      * @SWG\Property(property="users", type="array", @SWG\Items(type="object"))
      * @Groups({"restaurant:read", "tables:read", "table:read"})
      */

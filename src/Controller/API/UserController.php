@@ -8,11 +8,14 @@ use App\Http\Request\NewUserRequest;
 use App\Repository\UserRepository;
 use App\Service\Http\JsonResponseMaker;
 use Doctrine\ORM\EntityManagerInterface;
+use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Restaurant;
 
 /**
  * @Route("/api/v1/users")
@@ -84,4 +87,25 @@ class UserController extends AbstractController
 //    {
 //
 //    }
+
+    /**
+     * @SWG\Get(
+     *     summary="Get restoraunt by user",
+     *     tags={"Table"},
+     *     description="Получение ресторанов для пользователя",
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @SWG\Property(property="data", ref=@Model(type=Restaurant::class))
+     *     )
+     * )
+     *
+     * @Route("/{uuid}/restaurants", name="api_user_get_all_restaurants", methods={"GET"})
+     */
+    public function getRestorauntByUser(User $user): Response
+    {
+        $restaurants = $user->getRestaurants();
+
+        return $this->jsonResponseMaker->makeItemResponse($restaurants, ['groups' => 'restaurant:read'], Response::HTTP_OK);
+    }
 }
