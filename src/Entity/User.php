@@ -93,7 +93,7 @@ class User implements UserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Restaurant::class, mappedBy="users")
+     * @ORM\ManyToMany(targetEntity=Restaurant::class, mappedBy="users", cascade={"persist"})
      */
     private $restaurants;
 
