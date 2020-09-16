@@ -29,7 +29,6 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
     App\Resolver\ArgumentValueResolver:
         tags:
             - { name: controller.argument_value_resolver, priority: 50 }
@@ -55,3 +54,11 @@ services:
         arguments:
             $singer: '@Lcobucci\JWT\Signer\Rsa\Sha256'
             $expirationTimeAccess: '%env(EXPIRATION_TIME_ACCESS_TOKEN)%'
+
+
+    App\Normalizer\EntityNormalizer:
+        public: false
+        autowire: true
+        autoconfigure: true
+        tags:
+            - { name: serializer.normalizer }

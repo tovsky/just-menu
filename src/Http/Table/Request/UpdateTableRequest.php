@@ -2,10 +2,12 @@
 
 namespace App\Http\Table\Request;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\User;
+use App\Resolver\ArgumentValueInterface;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UpdateTableRequest
+class UpdateTableRequest implements ArgumentValueInterface
 {
     /**
      * @Assert\NotBlank(groups={"App\Http\Table\Request\UpdateTablesRequest"})
@@ -13,7 +15,10 @@ class UpdateTableRequest
      */
     private int $number;
 
-    private UserInterface $employee;
+    /**
+     * @SWG\Property(property="employee", type="integer")
+     */
+    private User $employee;
 
     /**
      * @Assert\NotBlank(groups={"App\Http\Table\Request\UpdateTablesRequest"})
@@ -21,12 +26,12 @@ class UpdateTableRequest
      */
     private string $status;
 
-    public function getEmployee(): UserInterface
+    public function getEmployee(): User
     {
         return $this->employee;
     }
 
-    public function setEmployee(UserInterface $employee): void
+    public function setEmployee(User $employee): void
     {
         $this->employee = $employee;
     }

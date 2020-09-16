@@ -12,11 +12,12 @@ use App\Http\Table\Response\Tables;
 use App\Service\Http\ResponseMakerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 
-class TableController
+class TableController extends AbstractController
 {
     private ResponseMakerInterface $responseMaker;
 
@@ -113,6 +114,41 @@ class TableController
      */
     public function getSingleTable(Table $table): Response
     {
+        return $this->responseMaker->makeItemResponse($table, ['groups' => 'table:read'], Response::HTTP_OK);
+    }
+
+    /**
+     * @SWG\Put(
+     *     summary="Update table",
+     *     tags={"Table"},
+     *     description="Обновление информации о столе",
+     *     @SWG\Parameter(
+     *          name="body",
+     *          in="body",
+     *          description="JSON Payload",
+     *          required=true,
+     *          type="json",
+     *          format="application/json",
+     *          @SWG\Schema(
+     *              ref=@Model(type=UpdateTableRequest::class)
+     *          )
+     *      ),
+     *      @SWG\Response(
+     *         response=201,
+     *         description="Successful operation"
+     *      )
+     * )
+     * @Route("/api/v1/table/{id}", name="api_table_update", methods={"PUT"})
+     */
+    public function updateTable(UpdateTableRequest $updateTableRequest, Table $table, EntityManagerInterface $em): Response
+    {
+        $table->setNumber($updateTableRequest->getNumber())
+            ->setStatus($updateTableRequest->getStatus())
+            ->setEmployee($updateTableRequest->getEmployee());
+
+        $em->persist($table);
+        $em->flush();
+
         return $this->responseMaker->makeItemResponse($table, ['groups' => 'table:read'], Response::HTTP_OK);
     }
 }
