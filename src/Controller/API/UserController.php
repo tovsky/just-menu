@@ -64,29 +64,14 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}", name="api_user_get_one", methods={"GET"})
+     * @Route("", name="api_user_get_one", methods={"GET"})
+     *
+     * @return JsonResponse
      */
-    public function getItem(User $user): JsonResponse
+    public function getItem(): JsonResponse
     {
-        return $this->jsonResponseMaker->makeItemResponse($user, ['groups' => ['user:read']]);
+        return $this->jsonResponseMaker->makeItemResponse($this->getUser(), ['groups' => ['user:read']]);
     }
-
-
-//    /**
-//     * @Route("/{uuid}}", name="api_user_update", methods={"PUT"})
-//     */
-//    public function updateItem(User $user): JsonResponse
-//    {
-//
-//    }
-//
-//    /**
-//     * @Route("/{uuid}", name="api_user_delete", methods={"DELETE"})
-//     */
-//    public function deleteItem(User $user): JsonResponse
-//    {
-//
-//    }
 
     /**
      * @SWG\Get(
@@ -100,12 +85,23 @@ class UserController extends AbstractController
      *     )
      * )
      *
-     * @Route("/{uuid}/restaurants", name="api_user_get_all_restaurants", methods={"GET"})
+     * @Route("/restaurants", name="api_user_get_all_restaurants", methods={"GET"})
      */
-    public function getRestorauntByUser(User $user): Response
+    public function getRestaurauntByUser(): Response
     {
-        $restaurants = $user->getRestaurants();
+        $restaurants = $this->getUser()->getRestaurants();
 
         return $this->jsonResponseMaker->makeItemResponse($restaurants, ['groups' => 'restaurant:read'], Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/{uuid}", name="api_user_get_one_by_uuid", methods={"GET"})
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function getItemByUuid(User $user): JsonResponse
+    {
+        return $this->jsonResponseMaker->makeItemResponse($user, ['groups' => ['user:read']]);
     }
 }

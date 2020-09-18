@@ -62,6 +62,8 @@ class AuthController extends AbstractController
     }
 
     /**
+     * @todo поправить ошибку когда 2 раза подряд логинится пользователь (не делая logout)
+     *
      * @Route("/login", name="api_login", methods={"POST"})
      *
      * @param AuthLoginRequest $loginRequest
