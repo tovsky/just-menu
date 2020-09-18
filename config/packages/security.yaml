@@ -20,7 +20,6 @@ security:
             provider: app_user_provider
             guard:
                 authenticators:
-                    - App\Security\LoginFormAuthenticator
                     - App\Security\JwtTokenAuthenticator
                 entry_point: App\Security\JwtTokenAuthenticator
             logout:
