@@ -40,6 +40,30 @@ services:
     chillerlan\QRCode\QRCode:
         class: chillerlan\QRCode\QRCode
 
+    Lcobucci\JWT\Signer\Rsa\Sha256: ~
+
+    Lcobucci\JWT\Parser: ~
+
+    App\Security\Key\KeyProvider:
+        public: true
+        arguments:
+            $passPhrase: '%env(JWT_PASSPHRASE)%'
+            $pathPublicKey: 'file://%kernel.project_dir%/config/jwt/public.pem'
+            $pathPrivateKey:  'file://%kernel.project_dir%/config/jwt/private.pem'
+
+    App\Builder\TokenBuilder:
+        arguments:
+            $singer: '@Lcobucci\JWT\Signer\Rsa\Sha256'
+            $expirationTimeAccess: '%env(EXPIRATION_TIME_ACCESS_TOKEN)%'
+
+
+    App\Normalizer\EntityNormalizer:
+        public: false
+        autowire: true
+        autoconfigure: true
+        tags:
+            - { name: serializer.normalizer }
+
     App\Service\File\FileUploader:
         arguments:
             $pathToSave: '%save.img.path%'

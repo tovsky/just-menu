@@ -4,21 +4,18 @@ namespace App\Entity;
 
 use App\Repository\FileRepository;
 use DateTimeInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=FileRepository::class)
  * @ORM\Table(options={"comment":"Файлы загруженные пользователями"})
  */
-class File extends AbstractGuardAuthenticator
+class File
 {
     /**
      * @ORM\Id()

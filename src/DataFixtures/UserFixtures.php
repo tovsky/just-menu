@@ -28,7 +28,8 @@ class UserFixtures extends Fixture
     {
         $user = new User();
         $user->setEmail('user1@just-menu.ru')
-            ->setUuid(Uuid::v4())
+//            ->setUuid(Uuid::v4())
+            ->setUuid(Uuid::fromString('1171a376-f6d7-4f3f-8b1c-7be79854abbd')) // для дальнейшего удобства в других фикстурах
             ->setName('Юзер1 Юзерович1')
             ->setPhone('1110010203')
 //            ->setRoles(['ROLE_ADMIN'])

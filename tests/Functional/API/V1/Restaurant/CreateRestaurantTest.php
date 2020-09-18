@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateRestaurantTest extends WebTestCase
 {
-    private const URL_METHOD = 'http://nginx/api/v0/restaurant';
+    private const URL_METHOD = 'http://nginx/api/v1/restaurant';
 
     /**
      * @dataProvider additionProviderSuccessCreate

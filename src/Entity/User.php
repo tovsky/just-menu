@@ -24,30 +24,33 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "table:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="uuid")
-     * @Groups({"user:read"})
+     * @Groups({"user:read", "jwt:access", "jwt:refresh"})
+     * @Groups({"user:read", "table:read"})
      */
     private $uuid;
     /**
      * @ORM\Column(type="string", length=255, options={"comment":"ФИО"})
-     * @Groups({"user:read", "user:create"})
+     * @Groups({"user:read", "user:create", "jwr:access", "jwt:refresh"})
+     * @Groups({"user:read", "user:create", "table:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, options={"comment":"Уникальный email"})
-     * @Groups({"user:read", "user:create"})
+     * @Groups({"user:read", "user:create", "jwt:access", "jwt:refresh"})
+     * @Groups({"user:read", "user:create", "table:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=14)
-     * @Groups({"user:read", "user:create"})
+     * @Groups({"user:read", "user:create", "table:read"})
      */
     private $phone;
 
@@ -64,7 +67,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, options={"comment":"Должность"})
-     * @Groups({"user:read", "user:create"})
+     * @Groups({"user:read", "user:create", "table:read"})
      */
     private $position;
 
@@ -72,7 +75,7 @@ class User implements UserInterface
      * @ORM\Column(type="boolean", options={"comment":"Активный подтвержденный пользователь"})
      * @Groups({"user:read"})
      */
-    private $isActive = false;
+    private bool $isActive = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Subscription::class, mappedBy="user")
@@ -93,7 +96,7 @@ class User implements UserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Restaurant::class, mappedBy="users")
+     * @ORM\ManyToMany(targetEntity=Restaurant::class, mappedBy="users", cascade={"persist"})
      */
     private $restaurants;
 

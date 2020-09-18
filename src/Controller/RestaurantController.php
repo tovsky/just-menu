@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Builder\RestaurantBuilder;
 use App\Entity\Restaurant;
-use App\Http\Request\CreateRestaurantRequest;
-use App\Http\Request\UpdateRestaurantRequest;
+use App\Http\Restaurant\Request\CreateRestaurantRequest;
+use App\Http\Restaurant\Request\UpdateRestaurantRequest;
 use App\Service\Http\ResponseMakerInterface;
 use App\Service\Updater\RestaurantUpdater;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 
 /**
- * @Route("/api/v1/restaurant")
+ * @Route("/api/v1/restaurants")
  */
 class RestaurantController extends AbstractController
 {
@@ -49,7 +49,7 @@ class RestaurantController extends AbstractController
      *         @SWG\Property(property="data", ref=@Model(type=Restaurant::class))
      *      )
      * )
-     * @Route("/", name="create_restauranta" ,methods={"POST"})
+     * @Route("/", name="api_restaurant_create" ,methods={"POST"})
      */
     public function create(
         CreateRestaurantRequest $request,
@@ -59,8 +59,7 @@ class RestaurantController extends AbstractController
         $restaurant = $builder->build($request);
         $em->persist($restaurant);
         $em->flush();
-
-        return $this->responseMaker->makeItemResponse($restaurant, [], Response::HTTP_CREATED);
+        return $this->responseMaker->makeItemResponse($restaurant, ['groups' => 'restaurant:read'], Response::HTTP_CREATED);
     }
 
     /**
@@ -73,17 +72,16 @@ class RestaurantController extends AbstractController
      *         description="Successful operation",
      *         @SWG\Property(property="data", ref=@Model(type=Restaurant::class))
      *     )
-     *     )
      * )
-     * @Route("/{slug}", name="get_restaurant", methods={"GET"})
+     * @Route("/{slug}", name="api_restaurant_get_one", methods={"GET"})
      */
     public function getItem(Restaurant $restaurant): Response
     {
-        return $this->responseMaker->makeItemResponse($restaurant, [], Response::HTTP_OK);
+        return $this->responseMaker->makeItemResponse($restaurant, ['groups' => 'restaurant:read'], Response::HTTP_OK);
     }
 
     /**
-     * @Route("/{slug}", name="update_restaurant", methods={"PUT"})
+     * @Route("/{slug}", name="api_restaurant_update", methods={"PUT"})
      * @SWG\Put(
      *     summary="Update restaurant",
      *     tags={"Restaurant"},
@@ -117,7 +115,7 @@ class RestaurantController extends AbstractController
         $em->persist($restaurant);
         $em->flush();
 
-        return $this->responseMaker->makeItemResponse($restaurant, [], Response::HTTP_OK);
+        return $this->responseMaker->makeItemResponse($restaurant, ['groups' => 'restaurant:read'], Response::HTTP_OK);
     }
 
 }

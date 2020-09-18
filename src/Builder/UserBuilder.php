@@ -3,31 +3,34 @@
 namespace App\Builder;
 
 use App\Entity\User;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\SerializerInterface;
+use App\Http\Request\NewUserRequest;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Uid\Uuid;
 
 class UserBuilder
 {
-     private SerializerInterface $serializer;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
-    public function __construct(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
+    public function __construct(
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
+        $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function build(Request $request): User
+    public function build(NewUserRequest $newUserRequest): User
     {
-        /** @var User $user */
-        $user = $this->serializer->deserialize(
-            $request->getContent(),
-            User::class,
-            JsonEncoder::FORMAT,
-            ['groups' => 'user:create']
-        );
+        $user = new User();
+        $user->setName($newUserRequest->getName())
+            ->setEmail($newUserRequest->getEmail())
+            ->setPhone($newUserRequest->getPhone())
+            ->setPosition($newUserRequest->getPosition());
 
         $user->setUuid(Uuid::v4());
+        $user->setPassword(
+            $this->passwordEncoder->encodePassword(
+                $user, $newUserRequest->getPassword()
+            )
+        );
 
         return $user;
     }

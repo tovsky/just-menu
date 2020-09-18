@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Request;
+namespace App\Http\Restaurant\Request;
 
 use App\Resolver\ArgumentValueInterface;
 use Symfony\Component\Validator\Constraints as Assert;
