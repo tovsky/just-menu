@@ -4,7 +4,16 @@ nelmio_api_doc:
             title: Jmenu
             description: Menu
             version: 1.0.0
+        securityDefinitions:
+            Bearer:
+                type: apiKey
+                description: 'Value: Bearer {jwt}'
+                name: Authorization
+                in: header
+        security:
+            - Bearer: []
     areas:
         path_patterns:
+            - ^/api/v1/auth(?!/doc$)
             - ^/api/v1/restaurant(?!/doc$)
             - ^/api/v1/table(?!/doc$)

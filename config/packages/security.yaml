@@ -39,4 +39,5 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
          - { path: ^/api/v1/auth, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/api/v1/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/api, roles: ROLE_USER }

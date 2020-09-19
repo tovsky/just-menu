@@ -25,3 +25,7 @@ JWT_PASSPHRASE=1111
 
 ### Дополнительно
 * После регистрации приходит письмо для подтверждения на EMAIL, локально можно увидеть вот здесь `http://localhost:1080`
+
+
+### Docs 
+Docs SWAGGER https://hrka.atlassian.net/wiki/spaces/JUS/pages/57933825/Swagger+live+documentation
