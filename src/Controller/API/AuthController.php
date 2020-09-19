@@ -62,8 +62,6 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @todo поправить ошибку когда 2 раза подряд логинится пользователь (не делая logout)
-     *
      * @Route("/login", name="api_login", methods={"POST"})
      *
      * @param AuthLoginRequest $loginRequest
@@ -91,6 +89,7 @@ class AuthController extends AbstractController
         $oldRefreshToken = $this->refreshTokenRepository->findOneBy(['user' => $user->getId()]);
         if (null !== $oldRefreshToken) {
             $this->em->remove($oldRefreshToken);
+            $this->em->flush();
         }
 
         // создаем новый объект refresh token и сохраняем

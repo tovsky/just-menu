@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -24,38 +26,56 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user:read", "table:read"})
+     * @Groups({
+     *     "user:read",
+     *     "table:read"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="uuid")
-     * @Groups({"user:read", "jwt:access", "jwt:refresh"})
-     * @Groups({"user:read", "table:read"})
      */
     private $uuid;
     /**
      * @ORM\Column(type="string", length=255, options={"comment":"ФИО"})
-     * @Groups({"user:read", "user:create", "jwr:access", "jwt:refresh"})
-     * @Groups({"user:read", "user:create", "table:read"})
+     * @Groups({
+     *     "user:read",
+     *     "user:create",
+     *     "jwt:access",
+     *     "jwt:refresh",
+     *     "table:read"
+     * })
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, options={"comment":"Уникальный email"})
-     * @Groups({"user:read", "user:create", "jwt:access", "jwt:refresh"})
-     * @Groups({"user:read", "user:create", "table:read"})
+     * @Groups({
+     *     "user:read",
+     *     "user:create",
+     *     "jwt:access",
+     *     "jwt:refresh",
+     *     "table:read"
+     * })
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="string", length=14)
-     * @Groups({"user:read", "user:create", "table:read"})
+     * @Groups({
+     *     "user:read",
+     *     "user:create",
+     *     "table:read"
+     * })
      */
-    private $phone;
+    private string $phone;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({
+     *     "jwt:access"
+     * })
      */
     private $roles = [];
 
@@ -344,6 +364,21 @@ class User implements UserInterface
     }
 
     public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @SerializedName("uuid")
+     *
+     * @Groups({
+     *     "user:read",
+     *     "jwt:access",
+     *     "jwt:refresh",
+     *     "table:read"
+     * })
+     */
+    public function getUuidAsString(): string
     {
         return $this->uuid;
     }

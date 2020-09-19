@@ -6,16 +6,16 @@ namespace App\Builder;
 
 use App\Entity\User;
 use App\Security\Key\KeyProviderInterface;
+use App\Service\Provider\SerializerProvider;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Rsa;
 use Lcobucci\JWT\Token;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class TokenBuilder
 {
     private KeyProviderInterface $keyProvider;
 
-    private SerializerInterface $serializer;
+    private SerializerProvider $serializerProvider;
 
     private Rsa $singer;
 
@@ -26,13 +26,13 @@ class TokenBuilder
     public function __construct(
         KeyProviderInterface $keyProvider,
         Rsa $singer,
-        SerializerInterface $serializer,
+        SerializerProvider $serializerProvider,
         int $expirationTimeAccess = 3600, // 1 час
         int $expirationTimeRefresh = 2592000 // 30 дней
     )
     {
         $this->keyProvider = $keyProvider;
-        $this->serializer = $serializer;
+        $this->serializerProvider = $serializerProvider;
         $this->expirationTimeAccess = $expirationTimeAccess;
         $this->singer = $singer;
         $this->expirationTimeRefresh = $expirationTimeRefresh;
@@ -45,8 +45,9 @@ class TokenBuilder
     public function buildAccessToken(User $user): Token
     {
         $time = time() + $this->expirationTimeAccess;
+
         $accessToken = (new Builder())->expiresAt($time)
-            ->withClaim('user', $this->serializer->serialize($user, 'json', ['groups' => 'jwt:access']))
+            ->withClaim('user', $this->serializerProvider->getDefaultSerilizer()->serialize($user, 'json', ['groups' => 'jwt:access']))
             ->getToken($this->singer, $this->keyProvider->getPrivateKey());
 
         return $accessToken;
@@ -60,7 +61,7 @@ class TokenBuilder
     {
         $time = time() + $this->expirationTimeRefresh;
         $refreshToken = (new Builder())->expiresAt($time)
-            ->withClaim('user', $this->serializer->serialize($user, 'json', ['groups' => 'jwt:refresh']))
+            ->withClaim('user', $this->serializerProvider->getDefaultSerilizer()->serialize($user, 'json', ['groups' => 'jwt:refresh']))
             ->getToken($this->singer, $this->keyProvider->getPrivateKey());
 
         return $refreshToken;
