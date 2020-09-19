@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/auth")
+ * @Route("/api/v1/auth")
  */
 class AuthController extends AbstractController
 {
