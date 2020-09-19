@@ -238,6 +238,21 @@ class Restaurant
         return $this;
     }
 
+    public function getActiveFiles(): array
+    {
+        $activeFiles = [];
+
+        /** @var File $file */
+        foreach ($this->files as $file) {
+            if (!$file->isActive()) {
+                continue;
+            }
+            $activeFiles[] = $file;
+        }
+
+        return $activeFiles;
+    }
+
     public function removeFile(File $file): self
     {
         if ($this->files->contains($file)) {

@@ -23,10 +23,8 @@ class JsonResponseMaker implements ResponseMakerInterface
     {
         return new JsonResponse(
             [
-                'data' => [
-                    $this->serializer->normalize($item,  null, $context),
-                ],
-                'meta'  => [
+                'data' => $this->serializer->normalize($item, null, $context),
+                'meta' => [
                     'comment' => $comment,
                 ]
             ],
@@ -34,14 +32,14 @@ class JsonResponseMaker implements ResponseMakerInterface
         );
     }
 
-    public function makeItemsResponse($items,  $context = [], $httpStatus = Response::HTTP_OK): JsonResponse
+    public function makeItemsResponse($items, $context = [], $httpStatus = Response::HTTP_OK): JsonResponse
     {
         return new JsonResponse(
             [
                 'data' => [
-                    'items' => $this->serializer->normalize($items,  null, $context),
+                    'items' => $this->serializer->normalize($items, null, $context),
                 ],
-                'meta'  => [
+                'meta' => [
 
                 ],
             ],

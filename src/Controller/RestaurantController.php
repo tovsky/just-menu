@@ -27,6 +27,7 @@ class RestaurantController extends AbstractController
         $this->responseMaker = $responseMaker;
     }
 
+    //@TODO починить ответ
     /**
      * @SWG\Post(
      *     summary="Create restaurant",
@@ -45,8 +46,7 @@ class RestaurantController extends AbstractController
      *      ),
      *      @SWG\Response(
      *         response=200,
-     *         description="Successful operation",
-     *         @SWG\Property(property="data", ref=@Model(type=Restaurant::class))
+     *         description="Successful operation"
      *      )
      * )
      * @Route("/", name="api_restaurant_create" ,methods={"POST"})
@@ -62,6 +62,7 @@ class RestaurantController extends AbstractController
         return $this->responseMaker->makeItemResponse($restaurant, ['groups' => 'restaurant:read'], Response::HTTP_CREATED);
     }
 
+    //@TODO починить ответ
     /**
      * @SWG\Get(
      *     summary="Get restaurant by slug",
@@ -69,8 +70,7 @@ class RestaurantController extends AbstractController
      *     description="Получение ресторана по слагу",
      *     @SWG\Response(
      *         response=200,
-     *         description="Successful operation",
-     *         @SWG\Property(property="data", ref=@Model(type=Restaurant::class))
+     *         description="Successful operation"
      *     )
      * )
      * @Route("/{slug}", name="api_restaurant_get_one", methods={"GET"})
@@ -80,6 +80,7 @@ class RestaurantController extends AbstractController
         return $this->responseMaker->makeItemResponse($restaurant, ['groups' => 'restaurant:read'], Response::HTTP_OK);
     }
 
+    //@TODO починить ответ
     /**
      * @Route("/{slug}", name="api_restaurant_update", methods={"PUT"})
      * @SWG\Put(
@@ -99,8 +100,7 @@ class RestaurantController extends AbstractController
      *      ),
      *      @SWG\Response(
      *         response=201,
-     *         description="Successful operation",
-     *         @SWG\Property(property="data", ref=@Model(type=Restaurant::class))
+     *         description="Successful operation"
      *      )
      * )
      */

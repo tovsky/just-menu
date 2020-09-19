@@ -5,14 +5,15 @@ namespace App\Controller\API;
 use App\Builder\FileBuilder;
 use App\Entity\File;
 use App\Entity\Restaurant;
+use App\Exception\FileNotDeleteException;
 use App\Exception\ValidationException;
 use App\Http\Request\File\UploadFileRequest;
 use App\Repository\FileRepository;
-use App\Repository\UserRepository;
 use App\Service\File\FileUploader;
 use App\Service\Http\JsonResponseMaker;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,16 +41,6 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/", name="api_file_get_all", methods={"GET"})
-     */
-    public function getAll(): JsonResponse
-    {
-        $files = $this->fileRepository->findAll();
-
-        return $this->jsonResponseMaker->makeItemsResponse($files, ['groups' => ['file:read']]);
-    }
-
-    /**
      * @SWG\Post(
      *     summary="Upload File",
      *     tags={"Restaurant", "File"},
@@ -67,8 +58,7 @@ class FileController extends AbstractController
      *      ),
      *      @SWG\Response(
      *         response=200,
-     *         description="Successful operation",
-     *         @SWG\Property(property="data", ref=@Model(type=File::class))
+     *         description="Successful operation"
      *      )
      * )
      * @Route("/restaurant/{slug}/file", name="api_file_save_one", methods={"POST"})
@@ -80,15 +70,14 @@ class FileController extends AbstractController
         Restaurant $restaurant,
         FileBuilder $fileBuilder,
         EntityManagerInterface $em,
-        UserRepository $userRepository,
-    FileUploader $fileUploader
+        FileUploader $fileUploader
     ): JsonResponse
     {
         $uploadedFileRequest = new UploadFileRequest();
 
         $uploadedFileRequest->setFile($request->files->get('file'));
         $uploadedFileRequest->setRestaurant($restaurant);
-        $uploadedFileRequest->setUser($userRepository->findOneBy(['id' => 1]));
+        $uploadedFileRequest->setUser($this->getUser());
 
         $serializer->denormalize($request->request->all(), UploadFileRequest::class, 'array', [AbstractNormalizer::OBJECT_TO_POPULATE => $uploadedFileRequest]);
 
@@ -98,7 +87,8 @@ class FileController extends AbstractController
         }
 
         $file = $fileBuilder->build($uploadedFileRequest);
-        $fileUploader->upload($uploadedFileRequest->getFile(), $file->getPhysicalFileName(), $file->getRestaurants());
+        $fileUploader->upload($uploadedFileRequest->getFile(), $file->getPhysicalFileName(), $file->getRestaurant()->getId());
+
         $em->persist($file);
         $em->flush();
 
@@ -106,27 +96,56 @@ class FileController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="api_file_get_one", methods={"GET"})
+     * @SWG\Get(
+     *     summary="Get file",
+     *     tags={"File"},
+     *     description="Получение файла по id",
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @SWG\Property(property="data", ref=@Model(type=File::class))
+     *     )
+     * )
+     * @Route("/files/{id}", name="api_file_get_one", methods={"GET"})
      */
-    public function getItem(File $file): JsonResponse
+    public function getItem(File $file = null): JsonResponse
     {
         return $this->jsonResponseMaker->makeItemResponse($file, ['groups' => ['file:read']]);
     }
 
-
     /**
-     * @Route("/{id}}", name="api_file_update", methods={"PUT"})
+     * @Route("/file/{id}", name="api_file_delete", methods={"DELETE"})
+     * @Entity("file", expr="repository.findActiveFile(id)")
      */
-    public function updateItem(File $file): JsonResponse
+    public function deleteItem(File $file, EntityManagerInterface $em, FileUploader $fileUploader): JsonResponse
     {
+        $file->setActive(false);
+        $isDelete = $fileUploader->move($file->getRestaurant()->getId(), $file->getPhysicalFileName());
 
+        if (false === $isDelete) {
+            throw new FileNotDeleteException();
+        }
+
+        $em->persist($file);
+        $em->flush();
+
+        return $this->jsonResponseMaker->makeItemResponse([], [], Response::HTTP_OK);
     }
 
     /**
-     * @Route("/{id}", name="api_file_delete", methods={"DELETE"})
+     * @SWG\Get(
+     *     summary="Get files by restaurant",
+     *     tags={"File"},
+     *     description="Получение файлов ресторана",
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Successful operation"
+     *     )
+     * )
+     * @Route("/restaurant/{slug}/files", name="api_files_get", methods={"GET"})
      */
-    public function deleteItem(File $file): JsonResponse
+    public function getAllFilesRestaurant(Restaurant $restaurant)
     {
-
+        return $this->jsonResponseMaker->makeItemResponse($restaurant->getActiveFiles(), ['groups' => 'file:read'], Response::HTTP_OK);
     }
 }

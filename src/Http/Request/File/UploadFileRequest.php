@@ -4,6 +4,7 @@ namespace App\Http\Request\File;
 
 use App\Entity\Restaurant;
 use App\Entity\User;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,6 +18,7 @@ class UploadFileRequest
      *     mimeTypesMessage = "Please upload a valid PDF"
      * )
      * @Assert\NotBlank()
+     * @SWG\Property(property="file", type="array", @SWG\Items(type="object"))
      */
     private ?UploadedFile $file = null;
 
@@ -31,10 +33,14 @@ class UploadFileRequest
      */
     private string $name;
 
+    /**
+     * @SWG\Property(property="restaurant", type="array", @SWG\Items(type="object"))
+     */
     private Restaurant $restaurant;
 
     /**
      * @Assert\NotBlank()
+     * @SWG\Property(property="user", type="array", @SWG\Items(type="object"))
      */
     private UserInterface $user;
 

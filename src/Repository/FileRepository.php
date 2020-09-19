@@ -19,6 +19,15 @@ class FileRepository extends ServiceEntityRepository
         parent::__construct($registry, File::class);
     }
 
+    public function findActiveFile(string $id): File
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.active=1')
+            ->andWhere('f.id=:id')
+            ->setParameters(['id' => $id])
+            ->getQuery()
+            ->getSingleResult();
+    }
     // /**
     //  * @return File[] Returns an array of File objects
     //  */

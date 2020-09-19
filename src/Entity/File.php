@@ -47,6 +47,7 @@ class File
      * @Groups({"file:read"})
      */
     private string $type;
+
     /**
      * @ORM\Column(type="integer", options={"comment":"Размер загруженного файла"})
      * @Groups({"file:read"})
@@ -71,6 +72,12 @@ class File
      * @ORM\ManyToOne(targetEntity=Restaurant::class, inversedBy="files")
      */
     private Restaurant $restaurant;
+
+    /**
+     * @ORM\Column(type="boolean", options={"comment":"Файл активный/удаленный"})
+     * @Groups({"file:read"})
+     */
+    private bool $active = true;
 
     public function __construct()
     {
@@ -180,5 +187,15 @@ class File
     public function __toString()
     {
         return (string)$this->getName();
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
     }
 }

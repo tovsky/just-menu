@@ -14,15 +14,15 @@ class FileBuilder
 
         return $file->setName($uploadFileRequest->getName())
             ->setUser($uploadFileRequest->getUser())
-            ->setPhysicalFileName($this->createPhysicalName($uploadFileRequest))
+            ->setPhysicalFileName($this->createPhysicalName($uploadFileRequest, $file->getId()))
             ->setType($uploadFileRequest->getType())
-            ->addRestaurant($uploadFileRequest->getRestaurant())
+            ->setRestaurant($uploadFileRequest->getRestaurant())
             ->setUser($uploadFileRequest->getUser())
             ->setSize($uploadFileRequest->getFile()->getSize())
             ->setMimeType($uploadFileRequest->getFile()->getMimeType());
     }
 
-    private function createPhysicalName(UploadFileRequest $file)
+    private function createPhysicalName(UploadFileRequest $file, string $idFile)
     {
         switch (true) {
             case strripos($file->getFile()->getMimeType(), 'png'):
@@ -38,6 +38,6 @@ class FileBuilder
                 throw new NotEncodableValueException('Формат неизвестен');
         }
 
-        return $file->getName() .'-' . $file->getRestaurant()->getId() . '.' . $format;
+        return $file->getName() .'-' . $idFile. '.' . $format;
     }
 }

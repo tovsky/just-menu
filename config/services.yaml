@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     save.img.path: '%kernel.project_dir%/public/files/%env(resolve:APP_ENV)%/restaurant'
+    archive.img.path: '%kernel.project_dir%/public/archive/%env(resolve:APP_ENV)%/restaurant'
 
 services:
     # default configuration for services in *this* file
@@ -67,3 +68,4 @@ services:
     App\Service\File\FileUploader:
         arguments:
             $pathToSave: '%save.img.path%'
+            $pathToArchive: '%archive.img.path%'
