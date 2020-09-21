@@ -11,8 +11,10 @@ use App\Repository\RefreshTokenRepository;
 use App\Repository\UserRepository;
 use App\Service\Http\JsonResponseMaker;
 use App\Security\Validator\JwtTokenValidatorInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Doctrine\ORM\EntityManagerInterface;
 use Lcobucci\JWT\Parser;
+use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,6 +64,44 @@ class AuthController extends AbstractController
     }
 
     /**
+     * @SWG\Post(
+     *     summary="Login",
+     *     tags={"Auth"},
+     *     description="Авторизация пользователей",
+     *     @SWG\Parameter(
+     *          name="body",
+     *          in="body",
+     *          description="JSON Payload",
+     *          required=true,
+     *          type="json",
+     *          format="application/json",
+     *          @SWG\Schema(
+     *              ref=@Model(type=AuthLoginRequest::class)
+     *          )
+     *      ),
+     *  @SWG\Response(
+     *         response="200",
+     *         description="Successful operation",
+     *         @SWG\Schema(
+     *             @SWG\Property(
+     *                 property="accessToken",
+     *                 type="string",
+     *                 description="JWT access token"
+     *             ),
+     *             @SWG\Property(
+     *                 property="refreshToken",
+     *                 type="string",
+     *                         description="Jwt refresh token"
+     *             ),
+     *             example={
+     *                 "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+     *                 "refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+     *             }
+     *         )
+     *     ),
+     *   @SWG\Response(response="400",description="Bad request"),
+     * )
+     *
      * @Route("/login", name="api_login", methods={"POST"})
      *
      * @param AuthLoginRequest $loginRequest
@@ -104,6 +144,41 @@ class AuthController extends AbstractController
     }
 
     /**
+     * @SWG\Post(
+     *     summary="Logout",
+     *     tags={"Auth"},
+     *     description="Logout пользователя",
+     *     @SWG\Parameter(
+     *          name="body",
+     *          in="body",
+     *          description="JSON Payload",
+     *          required=true,
+     *          type="json",
+     *          format="application/json",
+     *          @SWG\Schema(
+     *              ref=@Model(type=RefreshTokensRequest::class)
+     *          )
+     *      ),
+     *  @SWG\Response(
+     *         response="200",
+     *         description="Successful operation",
+     *         @SWG\Schema(
+     *             @SWG\Property(
+     *                 property="accessToken",
+     *                 type="string",
+     *                 description="JWT access token"
+     *             ),
+     *             @SWG\Property(
+     *                 property="refreshToken",
+     *                 type="string",
+     *                         description="Jwt refresh token"
+     *             ),
+     *             example={}
+     *         )
+     *     ),
+     *   @SWG\Response(response="400",description="Bad request"),
+     * )
+     *
      * @Route("/logout", name="api_logout", methods={"POST"})
      *
      * @param AuthLogoutRequest $logoutRequest
@@ -131,6 +206,44 @@ class AuthController extends AbstractController
     }
 
     /**
+     * @SWG\Post(
+     *     summary="Refresh token",
+     *     tags={"Auth"},
+     *     description="Обновление JWT ключей",
+     *     @SWG\Parameter(
+     *          name="body",
+     *          in="body",
+     *          description="JSON Payload",
+     *          required=true,
+     *          type="json",
+     *          format="application/json",
+     *          @SWG\Schema(
+     *              ref=@Model(type=AuthLogoutRequest::class)
+     *          )
+     *      ),
+     *  @SWG\Response(
+     *         response="200",
+     *         description="Successful operation",
+     *         @SWG\Schema(
+     *             @SWG\Property(
+     *                 property="accessToken",
+     *                 type="string",
+     *                 description="JWT access token"
+     *             ),
+     *             @SWG\Property(
+     *                 property="refreshToken",
+     *                 type="string",
+     *                         description="Jwt refresh token"
+     *             ),
+     *             example={
+     *                 "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+     *                 "refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+     *              }
+     *         )
+     *     ),
+     *  @SWG\Response(response="400",description="Bad request"),
+     * )
+     *
      * @Route("/refresh-tokens", name="api_refresh_tokens", methods={"POST"})
      *
      * @param RefreshTokensRequest $refreshTokensRequest

@@ -17,11 +17,16 @@ JWT_PASSPHRASE=1111
 
 
 ## Доступные роуты
-`localhost:8000/`
-`localhost:8000/login`
-`localhost:8000/logout`
-`localhost:8000/register`
+* `localhost:8000/`
+* `localhost:8000/login`
+* `localhost:8000/logout`
+* `localhost:8000/register`
+* `localhost:8000/api/v1/doc`  (документация swagger)
 
 
 ### Дополнительно
 * После регистрации приходит письмо для подтверждения на EMAIL, локально можно увидеть вот здесь `http://localhost:1080`
+
+
+### Docs 
+Docs SWAGGER https://hrka.atlassian.net/wiki/spaces/JUS/pages/57933825/Swagger+live+documentation
