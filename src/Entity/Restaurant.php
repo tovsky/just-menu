@@ -85,7 +85,7 @@ class Restaurant
     /**
      * Файлы, загруженные для организации
      *
-     * @ORM\ManyToMany(targetEntity=File::class, inversedBy="restaurants")
+     * @ORM\OneToMany(targetEntity=File::class, mappedBy="restaurant", cascade={"persist"})
      * @SWG\Property(property="files", type="array", @SWG\Items(type="object"))
      * @Groups({"restaurant:read", "tables:read", "table:read"})
      */
@@ -236,6 +236,21 @@ class Restaurant
         }
 
         return $this;
+    }
+
+    public function getActiveFiles(): array
+    {
+        $activeFiles = [];
+
+        /** @var File $file */
+        foreach ($this->files as $file) {
+            if (!$file->isActive()) {
+                continue;
+            }
+            $activeFiles[] = $file;
+        }
+
+        return $activeFiles;
     }
 
     public function removeFile(File $file): self

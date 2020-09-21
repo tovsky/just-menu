@@ -26,13 +26,13 @@ class FileFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $user = $this->userRepository->findOneBy(['email' => 'admin@just-menu.ru']);
+//        $user = $this->userRepository->findOneBy(['email' => 'admin@just-menu.ru']);
 //dd($user);
-        for ($i = 1; $i <= self::COUNT_FIXTURE_FILES; $i++) {
-            $manager->persist($this->createFile($user, $i));
-        }
-
-        $manager->flush();
+//        for ($i = 1; $i <= self::COUNT_FIXTURE_FILES; $i++) {
+//            $manager->persist($this->createFile($user, $i));
+//        }
+//
+//        $manager->flush();
     }
 
     private function createFile(UserInterface $user, $iterationNumber): File

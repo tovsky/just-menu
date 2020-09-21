@@ -27,6 +27,7 @@ final class NotFoundHttpExceptionEventSubscriber implements EventSubscriberInter
         if (!$event->getThrowable() instanceof NotFoundHttpException) {
             return;
         }
+
         $event->setResponse($this->jsonResponse($event));
     }
 
