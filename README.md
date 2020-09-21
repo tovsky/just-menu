@@ -17,10 +17,11 @@ JWT_PASSPHRASE=1111
 
 
 ## Доступные роуты
-`localhost:8000/`
-`localhost:8000/login`
-`localhost:8000/logout`
-`localhost:8000/register`
+* `localhost:8000/`
+* `localhost:8000/login`
+* `localhost:8000/logout`
+* `localhost:8000/register`
+* `localhost:8000/api/v1/doc`  (документация swagger)
 
 
 ### Дополнительно

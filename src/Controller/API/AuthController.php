@@ -99,7 +99,7 @@ class AuthController extends AbstractController
      *             }
      *         )
      *     ),
-     *   @SWG\Response(response="401",description="Unauthorized"),
+     *   @SWG\Response(response="400",description="Bad request"),
      * )
      *
      * @Route("/login", name="api_login", methods={"POST"})
@@ -145,9 +145,9 @@ class AuthController extends AbstractController
 
     /**
      * @SWG\Post(
-     *     summary="Refresh token",
+     *     summary="Logout",
      *     tags={"Auth"},
-     *     description="Обновление JWT ключей",
+     *     description="Logout пользователя",
      *     @SWG\Parameter(
      *          name="body",
      *          in="body",
@@ -173,13 +173,10 @@ class AuthController extends AbstractController
      *                 type="string",
      *                         description="Jwt refresh token"
      *             ),
-     *             example={
-     *                 "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGc...",
-     *                 "refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGc...",
-     *             }
+     *             example={}
      *         )
      *     ),
-     *   @SWG\Response(response="401",description="Unauthorized"),
+     *   @SWG\Response(response="400",description="Bad request"),
      * )
      *
      * @Route("/logout", name="api_logout", methods={"POST"})
@@ -210,9 +207,9 @@ class AuthController extends AbstractController
 
     /**
      * @SWG\Post(
-     *     summary="Logout",
+     *     summary="Refresh token",
      *     tags={"Auth"},
-     *     description="Logout пользователя",
+     *     description="Обновление JWT ключей",
      *     @SWG\Parameter(
      *          name="body",
      *          in="body",
@@ -238,9 +235,13 @@ class AuthController extends AbstractController
      *                 type="string",
      *                         description="Jwt refresh token"
      *             ),
-     *             example={}
+     *             example={
+     *                 "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+     *                 "refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+     *              }
      *         )
      *     ),
+     *  @SWG\Response(response="400",description="Bad request"),
      * )
      *
      * @Route("/refresh-tokens", name="api_refresh_tokens", methods={"POST"})
